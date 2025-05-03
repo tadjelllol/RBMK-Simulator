@@ -18,15 +18,15 @@ export const RBMKDials = {
   dialReasimOutputMod: 1,
   dialReasimBoilers: false,
   dialReasimBoilerSpeed: 0.05,
-  dialDisableMeltdowns: false
-};
+  dialDisableMeltdowns: false,
+}
 
 // Enums
 export const NType = {
   SLOW: "SLOW",
   FAST: "FAST",
-  ANY: "ANY"
-};
+  ANY: "ANY",
+}
 
 export const EnumBurnFunc = {
   PASSIVE: "PASSIVE",
@@ -37,8 +37,8 @@ export const EnumBurnFunc = {
   SQUARE_ROOT: "SQUARE_ROOT",
   LINEAR: "LINEAR",
   QUADRATIC: "QUADRATIC",
-  EXPERIMENTAL: "EXPERIMENTAL"
-};
+  EXPERIMENTAL: "EXPERIMENTAL",
+}
 
 export const EnumBurnFunc2 = {
   PASSIVE: `<span style="color: green; margin: 0px;">SAFE / PASSIVE</span>`,
@@ -49,28 +49,24 @@ export const EnumBurnFunc2 = {
   SQUARE_ROOT: `<span style="color: yellow; margin: 0px;">MEDIUM / SQUARE ROOT</span>`,
   LINEAR: `<span style="color: red; margin: 0px;">DANGEROUS / LINEAR</span>`,
   QUADRATIC: `<span style="color: red; margin: 0px;">DANGEROUS / QUADRATIC</span>`,
-  EXPERIMENTAL: `<span style="color: red; margin: 0px;">EXPERIMENTAL / SINE SLOPE</span>`
-};
+  EXPERIMENTAL: `<span style="color: red; margin: 0px;">EXPERIMENTAL / SINE SLOPE</span>`,
+}
 
 export const EnumDepleteFunc = {
   LINEAR: "LINEAR",
   RAISING_SLOPE: "RAISING_SLOPE",
   BOOSTED_SLOPE: "BOOSTED_SLOPE",
   GENTLE_SLOPE: "GENTLE_SLOPE",
-  STATIC: "STATIC"
-};
+  STATIC: "STATIC",
+}
 
 export const ControlAutoFunctions = {
   LINEAR: "LINEAR",
   QUAD_UP: "QUAD_UP",
-  QUAD_DOWN: "QUAD_DOWN"
-};
+  QUAD_DOWN: "QUAD_DOWN",
+}
 
-export const InterpolationText = [
-  "Linear",
-  "Quadratic",
-  "Inverse Quadratic"
-];
+export const InterpolationText = ["Linear", "Quadratic", "Inverse Quadratic"]
 
 // Simulation options
 export const SimulationDefaults = {
@@ -79,7 +75,7 @@ export const SimulationDefaults = {
   frames: 0,
   rbmkStuff: {
     boilerInputRate: 0,
-    boilerOutputRate: 0
+    boilerOutputRate: 0,
   },
   place: {
     placing: true,
@@ -96,18 +92,21 @@ export const SimulationDefaults = {
       { select: "storage", index: 11 },
       { select: "cooler", index: 12 },
       { select: "nothing", index: 14 },
-    ]
+    ],
   },
   config: {
     columnIndexSelected: -1,
-    prevColumn: 0
-  }
-};
+    prevColumn: 0,
+  },
+}
 
 // Asset paths
 export const Assets = {
-  consoleImg: "https://raw.githubusercontent.com/HbmMods/Hbm-s-Nuclear-Tech-GIT/master/src/main/resources/assets/hbm/textures/gui/rbmk/gui_rbmk_console.png",
-  az5Sound: "https://github.com/HbmMods/Hbm-s-Nuclear-Tech-GIT/blob/master/src/main/resources/assets/hbm/sounds/block/shutdown.ogg?raw=true",
-  explosionSound: "https://github.com/HbmMods/Hbm-s-Nuclear-Tech-GIT/blob/master/src/main/resources/assets/hbm/sounds/block/rbmk_explosion.ogg?raw=true",
-  baseTexturePath: "https://raw.githubusercontent.com/HbmMods/Hbm-s-Nuclear-Tech-GIT/master/src/main/resources/assets/hbm/textures/items/"
-};
+  consoleImg: "dist/assets/gui_rbmk_console.png",
+  az5Sound:
+    "https://github.com/HbmMods/Hbm-s-Nuclear-Tech-GIT/blob/master/src/main/resources/assets/hbm/sounds/block/shutdown.ogg?raw=true",
+  explosionSound:
+    "https://github.com/HbmMods/Hbm-s-Nuclear-Tech-GIT/blob/master/src/main/resources/assets/hbm/sounds/block/rbmk_explosion.ogg?raw=true",
+  baseTexturePath:
+    "https://raw.githubusercontent.com/HbmMods/Hbm-s-Nuclear-Tech-GIT/master/src/main/resources/assets/hbm/textures/items/",
+}

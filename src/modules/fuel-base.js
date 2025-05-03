@@ -1,5 +1,4 @@
-import { EnumBurnFunc, EnumBurnFunc2, EnumDepleteFunc, NType } from './constants.js';
-import { fuelNames } from './fuel-names.js';
+import { EnumBurnFunc, EnumBurnFunc2, EnumDepleteFunc, NType } from "./constants.js"
 
 /**
  * Base class for all RBMK fuel types
@@ -9,30 +8,31 @@ export class RBMKFuel {
    * Create a new RBMKFuel
    */
   constructor() {
-    this.column = null;
+    this.column = null
 
-    this.fullName = "";
-    this.reactivity = 0;
-    this.selfRate = 0;
-    this.function = EnumBurnFunc.LOG_TEN;
-    this.displayFunc = EnumBurnFunc2.LOG_TEN;
-    this.depFunc = EnumDepleteFunc.GENTLE_SLOPE;
-    this.xGen = 0.5;
-    this.xBurn = 50;
-    this.heat = 1;
+    this.fullName = ""
+    this.reactivity = 0
+    this.selfRate = 0
+    this.function = EnumBurnFunc.LOG_TEN
+    this.displayFunc = EnumBurnFunc2.LOG_TEN
+    this.depFunc = EnumDepleteFunc.GENTLE_SLOPE
+    this.xGen = 0.5
+    this.xBurn = 50
+    this.heat = 1
     // This is yieldd because of Uncaught SyntaxError: yield is a reserved identifier
-    this.yieldd = 0;
-    this.defaultYield = 0;
-    this.meltingPoint = 1000;
-    this.diffusion = 0.2;
-    this.nType = NType.SLOW;
-    this.rType = NType.FAST;
+    this.yieldd = 0
+    this.defaultYield = 0
+    this.meltingPoint = 1000
+    this.diffusion = 0.2
+    this.nType = NType.SLOW
+    this.rType = NType.FAST
 
-    this.xenon = 0;
-    this.coreHeat = 20;
-    this.skinHeat = 20;
-    
-    this.texture = "https://raw.githubusercontent.com/HbmMods/Hbm-s-Nuclear-Tech-GIT/master/src/main/resources/assets/hbm/textures/items/rbmk_fuel_empty.png";
+    this.xenon = 0
+    this.coreHeat = 20
+    this.skinHeat = 20
+
+    this.texture =
+      "https://raw.githubusercontent.com/HbmMods/Hbm-s-Nuclear-Tech-GIT/master/src/main/resources/assets/hbm/textures/items/rbmk_fuel_empty.png"
   }
 
   /**
@@ -40,8 +40,8 @@ export class RBMKFuel {
    * @param {number} yieldd - The yield value
    */
   setYield(yieldd) {
-    this.yieldd = yieldd;
-    this.defaultYield = yieldd;
+    this.yieldd = yieldd
+    this.defaultYield = yieldd
   }
 
   /**
@@ -50,8 +50,8 @@ export class RBMKFuel {
    * @param {number} selfRate - The self rate
    */
   setStats(funcEnd, selfRate) {
-    this.reactivity = funcEnd;
-    this.selfRate = selfRate || 0;
+    this.reactivity = funcEnd
+    this.selfRate = selfRate || 0
   }
 
   /**
@@ -59,8 +59,8 @@ export class RBMKFuel {
    * @param {string} func - The function name
    */
   setFunction(func) {
-    this.function = func;
-    this.displayFunc = EnumBurnFunc2[func];
+    this.function = func
+    this.displayFunc = EnumBurnFunc2[func]
   }
 
   /**
@@ -68,7 +68,7 @@ export class RBMKFuel {
    * @param {string} func - The depletion function
    */
   setDepletionFunction(func) {
-    this.depFunc = func;
+    this.depFunc = func
   }
 
   /**
@@ -77,8 +77,8 @@ export class RBMKFuel {
    * @param {number} xBurn - The xenon burn value
    */
   setXenon(xGen, xBurn) {
-    this.xGen = xGen;
-    this.xBurn = xBurn;
+    this.xGen = xGen
+    this.xBurn = xBurn
   }
 
   /**
@@ -86,7 +86,7 @@ export class RBMKFuel {
    * @param {number} diffusion - The diffusion value
    */
   setDiffusion(diffusion) {
-    this.diffusion = diffusion;
+    this.diffusion = diffusion
   }
 
   /**
@@ -94,7 +94,7 @@ export class RBMKFuel {
    * @param {number} heat - The heat value
    */
   setHeat(heat) {
-    this.heat = heat;
+    this.heat = heat
   }
 
   /**
@@ -102,7 +102,7 @@ export class RBMKFuel {
    * @param {number} meltingPoint - The melting point
    */
   setMeltingPoint(meltingPoint) {
-    this.meltingPoint = meltingPoint;
+    this.meltingPoint = meltingPoint
   }
 
   /**
@@ -110,7 +110,7 @@ export class RBMKFuel {
    * @param {string} name - The name
    */
   setName(name) {
-    this.fullName = name;
+    this.fullName = name
   }
 
   /**
@@ -119,7 +119,7 @@ export class RBMKFuel {
    */
   setTexture(tex) {
     // Load textures from the GitHub repo instead of shoving every single texture inside the site files
-    this.texture = `https://raw.githubusercontent.com/HbmMods/Hbm-s-Nuclear-Tech-GIT/master/src/main/resources/assets/hbm/textures/items/${tex}.png`;
+    this.texture = `https://raw.githubusercontent.com/HbmMods/Hbm-s-Nuclear-Tech-GIT/master/src/main/resources/assets/hbm/textures/items/${tex}.png`
   }
 
   /**
@@ -128,8 +128,8 @@ export class RBMKFuel {
    * @param {string} rType - The reaction type
    */
   setNeutronTypes(nType, rType) {
-    this.nType = nType;
-    this.rType = rType || NType.FAST;
+    this.nType = nType
+    this.rType = rType || NType.FAST
   }
 
   /**
@@ -137,7 +137,7 @@ export class RBMKFuel {
    * @returns {number} - The depletion percentage
    */
   calcDepletion() {
-    return (((this.defaultYield - this.yieldd) / this.defaultYield) * 100000) / 1000;
+    return (((this.defaultYield - this.yieldd) / this.defaultYield) * 100000) / 1000
   }
 
   /**
@@ -145,56 +145,62 @@ export class RBMKFuel {
    * @returns {string} - The function description
    */
   getFuncDescription() {
-    let func = "";
+    let func = ""
 
     switch (this.function) {
-      case "PASSIVE": 
-        func = `${this.selfRate}`;
-        break;
-      case "LOG_TEN": 
-        func = "log10(%1$s + 1) * 0.5 * %2$s";
-        break;
-      case "PLATEU": 
-        func = "(1 - e^-%1$s / 25)) * %2$s";
-        break;
-      case "ARCH": 
-        func = "(%1$s - %1$s² / 10000) / 100 * %2$s [0;∞]";
-        break;
-      case "SIGMOID": 
-        func = "%2$s / (1 + e^(-(%1$s - 50) / 10)";
-        break;
-      case "SQUARE_ROOT": 
-        func = "sqrt(%1$s) * %2$s / 10";
-        break;
-      case "LINEAR": 
-        func = "%1$s / 100 * %2$s";
-        break;
-      case "QUADRATIC": 
-        func = "%1$s² / 10000 * %2$s";
-        break;
-      case "EXPERIMENTAL": 
-        func = "%1$s * (sin(%1$s) + 1) * %2$s";
-        break;
-      default: 
-        func = "ERROR";
-        break;
+      case "PASSIVE":
+        func = `${this.selfRate}`
+        break
+      case "LOG_TEN":
+        func = "log10(%1$s + 1) * 0.5 * %2$s"
+        break
+      case "PLATEU":
+        func = "(1 - e^-%1$s / 25)) * %2$s"
+        break
+      case "ARCH":
+        func = "(%1$s - %1$s² / 10000) / 100 * %2$s [0;∞]"
+        break
+      case "SIGMOID":
+        func = "%2$s / (1 + e^(-(%1$s - 50) / 10)"
+        break
+      case "SQUARE_ROOT":
+        func = "sqrt(%1$s) * %2$s / 10"
+        break
+      case "LINEAR":
+        func = "%1$s / 100 * %2$s"
+        break
+      case "QUADRATIC":
+        func = "%1$s² / 10000 * %2$s"
+        break
+      case "EXPERIMENTAL":
+        func = "%1$s * (sin(%1$s) + 1) * %2$s"
+        break
+      default:
+        func = "ERROR"
+        break
     }
 
-    const enrichment = this.getEnrichment();
+    const enrichment = this.getEnrichment()
     if (enrichment < 1) {
-      const enrichmentMod = this.reactivityModByEnrichment(enrichment);
-      const reactivity = `<span style="color: yellow;">${((this.reactivity * enrichmentMod * 1000) / 1000).toFixed(1)}</span>`;
-      const enrichmentPer = `<span style="color: gold;">${((enrichmentMod * 1000) / 10).toFixed(1)}%</span>`;
+      const enrichmentMod = this.reactivityModByEnrichment(enrichment)
+      const reactivity = `<span style="color: yellow;">${((this.reactivity * enrichmentMod * 1000) / 1000).toFixed(1)}</span>`
+      const enrichmentPer = `<span style="color: gold;">${((enrichmentMod * 1000) / 10).toFixed(1)}%</span>`
 
       return func
-        .replaceAll("%1$s", this.selfRate > 0 ? `(x <span style="color: red;">+ ${this.selfRate.toFixed(1)}</span>)` : "x")
+        .replaceAll(
+          "%1$s",
+          this.selfRate > 0 ? `(x <span style="color: red;">+ ${this.selfRate.toFixed(1)}</span>)` : "x",
+        )
         .replaceAll("%2$s", reactivity)
-        .concat(enrichmentPer);
+        .concat(enrichmentPer)
     }
-    
+
     return func
-      .replaceAll("%1$s", this.selfRate > 0 ? `(x <span style="color: red;">+ ${this.selfRate.toFixed(1)}</span>)` : "x")
-      .replaceAll("%2$s", this.reactivity.toFixed(1));
+      .replaceAll(
+        "%1$s",
+        this.selfRate > 0 ? `(x <span style="color: red;">+ ${this.selfRate.toFixed(1)}</span>)` : "x",
+      )
+      .replaceAll("%2$s", this.reactivity.toFixed(1))
   }
 
   /**
@@ -203,34 +209,34 @@ export class RBMKFuel {
    * @returns {number} - The output flux
    */
   burn(inFlux) {
-    inFlux += this.selfRate;
+    inFlux += this.selfRate
 
-    let xenon = this.xenon;
-    xenon -= this.xenonBurnFunc(inFlux);
+    let xenon = this.xenon
+    xenon -= this.xenonBurnFunc(inFlux)
 
-    inFlux *= (1 - this.getPoisonLevel());
+    inFlux *= 1 - this.getPoisonLevel()
 
-    xenon += this.xenonGenFunc(inFlux);
+    xenon += this.xenonGenFunc(inFlux)
 
-    if (xenon < 0) xenon = 0;
-    if (xenon > 100) xenon = 100;
+    if (xenon < 0) xenon = 0
+    if (xenon > 100) xenon = 100
 
-    this.xenon = xenon;
+    this.xenon = xenon
 
-    const outFlux = this.reactivityFunc(inFlux, this.getEnrichment() * window.RBMKDials.dialReactivityMod);
-    let y = this.yieldd;
-    y -= inFlux;
+    const outFlux = this.reactivityFunc(inFlux, this.getEnrichment() * window.RBMKDials.dialReactivityMod)
+    let y = this.yieldd
+    y -= inFlux
 
-    if (y < 0) y = 0;
+    if (y < 0) y = 0
 
-    this.yieldd = y;
+    this.yieldd = y
 
-    let coreHeat = this.coreHeat;
-    coreHeat += outFlux * this.heat;
+    let coreHeat = this.coreHeat
+    coreHeat += outFlux * this.heat
 
-    this.coreHeat = this.rectify(coreHeat);
+    this.coreHeat = this.rectify(coreHeat)
 
-    return outFlux;
+    return outFlux
   }
 
   /**
@@ -238,17 +244,17 @@ export class RBMKFuel {
    * @param {number} mod - The heat modifier
    */
   updateHeat(mod) {
-    let coreHeat = this.coreHeat;
-    let hullHeat = this.skinHeat;
+    let coreHeat = this.coreHeat
+    let hullHeat = this.skinHeat
 
     if (coreHeat > hullHeat) {
-      const mid = (coreHeat - hullHeat) / 2;
+      const mid = (coreHeat - hullHeat) / 2
 
-      coreHeat -= mid * this.diffusion * window.RBMKDials.dialDiffusionMod * mod;
-      hullHeat += mid * this.diffusion * window.RBMKDials.dialDiffusionMod * mod;
+      coreHeat -= mid * this.diffusion * window.RBMKDials.dialDiffusionMod * mod
+      hullHeat += mid * this.diffusion * window.RBMKDials.dialDiffusionMod * mod
 
-      this.coreHeat = this.rectify(coreHeat);
-      this.skinHeat = this.rectify(hullHeat);
+      this.coreHeat = this.rectify(coreHeat)
+      this.skinHeat = this.rectify(hullHeat)
     }
   }
 
@@ -259,26 +265,25 @@ export class RBMKFuel {
    * @returns {number} - The heat provided
    */
   provideHeat(heat, mod) {
-    let hullHeat = this.skinHeat;
+    let hullHeat = this.skinHeat
 
     if (hullHeat > this.meltingPoint) {
-      const coreHeat = this.coreHeat;
-      const avg = (heat + hullHeat + coreHeat) / 3;
-      this.coreHeat = avg;
-      this.skinHeat = avg;
-      return avg - heat;
+      const coreHeat = this.coreHeat
+      const avg = (heat + hullHeat + coreHeat) / 3
+      this.coreHeat = avg
+      this.skinHeat = avg
+      return avg - heat
     }
 
-    if (hullHeat <= heat)
-      return 0;
+    if (hullHeat <= heat) return 0
 
-    let ret = (hullHeat - heat) / 2;
-    ret *= window.RBMKDials.dialHeatProvision * mod;
+    let ret = (hullHeat - heat) / 2
+    ret *= window.RBMKDials.dialHeatProvision * mod
 
-    hullHeat -= ret;
-    this.skinHeat = hullHeat;
+    hullHeat -= ret
+    this.skinHeat = hullHeat
 
-    return ret;
+    return ret
   }
 
   /**
@@ -288,21 +293,30 @@ export class RBMKFuel {
    * @returns {number} - The reactivity
    */
   reactivityFunc(inFlux, enrichment) {
-    const flux = inFlux * this.reactivityModByEnrichment(enrichment);
+    const flux = inFlux * this.reactivityModByEnrichment(enrichment)
 
     switch (this.function) {
-      case "PASSIVE": return this.selfRate * enrichment;
-      case "LOG_TEN": return Math.log10(flux + 1) * 0.5 * this.reactivity;
-      case "PLATEU": return (1 - Math.pow(Math.E, -flux / 25)) * this.reactivity;
-      case "ARCH": return Math.max((flux - (flux * flux / 10000)) / 100 * this.reactivity, 0);
-      case "SIGMOID": return this.reactivity / (1 + Math.pow(Math.E, -(flux - 50) / 10));
-      case "SQUARE_ROOT": return Math.sqrt(flux) * this.reactivity / 10;
-      case "LINEAR": return flux / 100 * this.reactivity;
-      case "QUADRATIC": return flux * flux / 10000 * this.reactivity;
-      case "EXPERIMENTAL": return flux * (Math.sin(flux) + 1) * this.reactivity;
+      case "PASSIVE":
+        return this.selfRate * enrichment
+      case "LOG_TEN":
+        return Math.log10(flux + 1) * 0.5 * this.reactivity
+      case "PLATEU":
+        return (1 - Math.pow(Math.E, -flux / 25)) * this.reactivity
+      case "ARCH":
+        return Math.max(((flux - (flux * flux) / 10000) / 100) * this.reactivity, 0)
+      case "SIGMOID":
+        return this.reactivity / (1 + Math.pow(Math.E, -(flux - 50) / 10))
+      case "SQUARE_ROOT":
+        return (Math.sqrt(flux) * this.reactivity) / 10
+      case "LINEAR":
+        return (flux / 100) * this.reactivity
+      case "QUADRATIC":
+        return ((flux * flux) / 10000) * this.reactivity
+      case "EXPERIMENTAL":
+        return flux * (Math.sin(flux) + 1) * this.reactivity
     }
 
-    return 0;
+    return 0
   }
 
   /**
@@ -313,11 +327,16 @@ export class RBMKFuel {
   reactivityModByEnrichment(enrichment) {
     switch (this.depFunc) {
       default:
-      case "LINEAR": return enrichment;
-      case "STATIC": return 1;
-      case "BOOSTED_SLOPE": return enrichment + Math.sin((enrichment - 1) * (enrichment - 1) * Math.PI);
-      case "RAISING_SLOPE": return enrichment + (Math.sin(enrichment * Math.PI) / 2);
-      case "GENTLE_SLOPE": return enrichment + (Math.sin(enrichment * Math.PI) / 3);
+      case "LINEAR":
+        return enrichment
+      case "STATIC":
+        return 1
+      case "BOOSTED_SLOPE":
+        return enrichment + Math.sin((enrichment - 1) * (enrichment - 1) * Math.PI)
+      case "RAISING_SLOPE":
+        return enrichment + Math.sin(enrichment * Math.PI) / 2
+      case "GENTLE_SLOPE":
+        return enrichment + Math.sin(enrichment * Math.PI) / 3
     }
   }
 
@@ -327,7 +346,7 @@ export class RBMKFuel {
    * @returns {number} - The xenon generation
    */
   xenonGenFunc(flux) {
-    return flux * this.xGen;
+    return flux * this.xGen
   }
 
   /**
@@ -336,7 +355,7 @@ export class RBMKFuel {
    * @returns {number} - The xenon burn
    */
   xenonBurnFunc(flux) {
-    return (flux * flux) / this.xBurn;
+    return (flux * flux) / this.xBurn
   }
 
   /**
@@ -344,7 +363,7 @@ export class RBMKFuel {
    * @returns {number} - The poison level
    */
   getPoisonLevel() {
-    return this.xenon / 100;
+    return this.xenon / 100
   }
 
   /**
@@ -352,7 +371,7 @@ export class RBMKFuel {
    * @returns {number} - The enrichment
    */
   getEnrichment() {
-    return this.yieldd / this.defaultYield;
+    return this.yieldd / this.defaultYield
   }
 
   /**
@@ -361,9 +380,9 @@ export class RBMKFuel {
    * @returns {number} - The rectified number
    */
   rectify(num) {
-    if (num > 1_000_000) num = 1_000_000;
-    if (num < 20 || isNaN(num)) num = 20;
-    
-    return num;
+    if (num > 1_000_000) num = 1_000_000
+    if (num < 20 || isNaN(num)) num = 20
+
+    return num
   }
 }
