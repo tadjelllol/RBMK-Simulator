@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/HbmMods/Hbm-s-Nuclear-Tech-GIT/master/src/main/resources/assets/hbm/textures/items/rbmk_fuel_ueu.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NTM RBMK Simulator</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  </head>
+
+  <body>
+    <!-- Changelog Modal -->
+    <div id="changelog" class="hide">
+      <h2 style="margin-top: 2px;">v0.1.0</h2>
+      <h5 style="margin-top: -16px;color: #808080;margin-bottom: 14px;">Major upgrade with graphs - 17/03/2025</h5><hr>
+      <div id="innerChangelog" style="height: 130px;overflow-y:auto">
+        • Enhanced simulation physics for more realistic behavior<br>
+        • Added temperature gradient visualization<br>
+        • Improved UI with dark mode and better controls<br>
+        • Added neutron flux visualization<br>
+        • Added emergency cooling system simulation<br>
+        • Previous changelog:<br><br>
+        
+        v0.0.2b:<br>
+        Nothing has changed since the last release other than this changelog UI.<br>
+        Consider also checking <a href="https://voxelstice.github.io/ntm-zirnox-simulator">NTM ZIRNOX Simulator.</a><br>
+        Other than that, here's the v0.0.2a changelog:<br><br>
+
+        • Added rescaling for bigger RBMK designs (ui elements dont move upon rescaling yet)<br>
+        • RBMK fuels now have proper naming <br>
+        • Control rod criticality (surge)<br>
+        • This changelog button<br>
+        • Automatic control rods (not tested)<br>
+        • Radiation leak counter
+      </div><hr>
+      <button onclick="document.getElementById('changelog').className = 'hide'" style="margin-top: 4px;">Close</button>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+      <!-- Main Controls and Reactor Panel -->
+      <div class="main-panel">
+        <h1>NTM RBMK Simulator</h1>
+        <p>Welcome to the RBMK Simulator. Click on any existing block and then on any tile to start placing components.</p>
+        
+        <!-- Control buttons -->
+        <div class="btn-group">
+          <button class="btn" action="new">New</button>
+          <button class="btn" action="run">Run</button>
+          <button class="btn" action="placeconfig">Place</button>
+          <button class="btn" action="changelog">Changelog</button>
+          <button class="btn showInSim" tooltip="Controls all controls rods in the reactor" action="pullcrs" style="display: none;">Control CRs</button>
+          <button class="btn btn-danger showInSim" tooltip="Inserts all control rods" action="az5" style="display: none;">AZ-5</button>
+        </div>
+        
+        <!-- Reactor canvases container -->
+        <div class="panel">
+          <div style="position: relative; width: 480px; height: 480px;">
+            <canvas width="480" height="480" id="rbmk" style="position: absolute; top: 0; left: 0; z-index: 1;"></canvas>
+            <canvas width="480" height="480" id="stats" style="position: absolute; top: 0; left: 0; z-index: 2;"></canvas>
+            <p id="explosionText" style="z-index: 3; position: absolute; text-align: center; width: 480px; height: 480px; background-color: rgba(0,0,0, 0.5); top: 0; visibility: hidden;"><br>You destroyed the RBMK.<br>Congratulations.</p>
+          </div>
+        </div>
+        
+        <!-- Tools panel -->
+        <div class="panel">
+          <div class="panel-header">
+            <h2 class="panel-title">Tools</h2>
+          </div>
+          <canvas width="480" height="240" id="tools"></canvas>
+        </div>
+      </div>
+      
+      <!-- Config Panel -->
+      <div class="sidebar">
+        <div class="panel">
+          <div class="panel-header">
+            <h2 class="panel-title">Configuration</h2>
+          </div>
+          <div id="config_main"></div>
+        </div>
+      </div>
+      
+      <!-- Fuels and Stats Panel -->
+      <div class="sidebar">
+        <div class="panel">
+          <div class="panel-header">
+            <h2 class="panel-title">Fuels</h2>
+          </div>
+          <div id="fuels" class="fuel-grid"></div>
+        </div>
+        
+        <div class="panel">
+          <div class="panel-header">
+            <h2 class="panel-title">Statistics</h2>
+          </div>
+          <div id="averageStats" class="stat-container"></div>
+        </div>
+        
+        <div class="panel">
+          <p>This simulator by default uses Large Turbines and Auxiliary Cooling Towers for the boilers.</p>
+        </div>
+      </div>
+
+      <!-- Right Panel for Graphs -->
+      <div id="right-panel" class="sidebar"></div>
+    </div>
+
+    <!-- Module Scripts -->
+    <script type="module" src="src/index.js"></script>
+  </body>
+</html>
