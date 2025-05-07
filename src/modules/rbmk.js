@@ -25,7 +25,7 @@ export class RBMK {
     // Update the consoleImg initialization to use the correct path in dist/assets
     this.consoleImg = new Image()
     this.consoleImg.crossOrigin = "anonymous"
-    this.consoleImg.src = "dist/assets/gui_rbmk_console.png"
+    this.consoleImg.src = "assets/gui_rbmk_console.png"
     this.imageLoadFailed = false
 
     // Add error handling for image loading
