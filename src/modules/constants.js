@@ -102,7 +102,7 @@ export const SimulationDefaults = {
 
 // Asset paths
 export const Assets = {
-  consoleImg: "dist/assets/gui_rbmk_console.png",
+  consoleImg: "assets/gui_rbmk_console.png",
   az5Sound:
     "https://github.com/HbmMods/Hbm-s-Nuclear-Tech-GIT/blob/master/src/main/resources/assets/hbm/sounds/block/shutdown.ogg?raw=true",
   explosionSound:
