@@ -12,7 +12,7 @@
 }
 
 * {
-  font-family: 'Courier New', monospace;
+  font-family: "Courier New", monospace;
   color: var(--text-color);
   box-sizing: border-box;
   margin: 0;
@@ -142,14 +142,14 @@ body {
 .tooltip {
   position: fixed;
   z-index: 100;
-  background-color: rgba(0, 0, 0, 0.85);
-  border: 1px solid var(--border-color);
-  padding: 8px 10px;
-  border-radius: 4px;
+  background-color: rgba(0, 0, 0, 0.9);
+  border: 1px solid var(--highlight-color);
+  padding: 10px 12px;
+  border-radius: 6px;
   font-size: 14px;
   pointer-events: none;
   max-width: 300px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
 }
 
 /* Stats Display */
@@ -333,23 +333,49 @@ body {
 }
 
 /* Misc utility classes */
-.text-danger { color: var(--danger-color); }
-.text-success { color: var(--success-color); }
-.text-warning { color: var(--warning-color); }
+.text-danger {
+  color: var(--danger-color);
+}
+.text-success {
+  color: var(--success-color);
+}
+.text-warning {
+  color: var(--warning-color);
+}
 
-.mt-2 { margin-top: 10px; }
-.mb-2 { margin-bottom: 10px; }
+.mt-2 {
+  margin-top: 10px;
+}
+.mb-2 {
+  margin-bottom: 10px;
+}
 
-.noMargin { margin: 0; }
+.noMargin {
+  margin: 0;
+}
 
-.d-flex { display: flex; }
-.justify-between { justify-content: space-between; }
-.align-center { align-items: center; }
-.flex-column { flex-direction: column; }
-.gap-1 { gap: 5px; }
-.gap-2 { gap: 10px; }
+.d-flex {
+  display: flex;
+}
+.justify-between {
+  justify-content: space-between;
+}
+.align-center {
+  align-items: center;
+}
+.flex-column {
+  flex-direction: column;
+}
+.gap-1 {
+  gap: 5px;
+}
+.gap-2 {
+  gap: 10px;
+}
 
-.hide { display: none; }
+.hide {
+  display: none;
+}
 
 /* Configuration panel */
 #config_main {
@@ -414,4 +440,35 @@ body {
 
 #innerChangelog a:hover {
   text-decoration: underline;
+}
+
+/* Add styles for the improved graphs */
+.graph-box {
+  margin-bottom: 25px;
+  background-color: var(--panel-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 15px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.graph-box h3 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 1.1rem;
+  color: var(--text-color);
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 8px;
+}
+
+.graph-box canvas {
+  width: 100% !important;
+  height: 250px !important;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}
+
+/* Make the right panel wider for better graph display */
+#right-panel {
+  flex: 0 0 320px;
 }

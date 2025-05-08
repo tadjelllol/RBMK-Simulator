@@ -13,11 +13,6 @@ export const RBMKDials = {
   dialOutgasserSpeedMod: 1,
   dialControlSurgeMod: 1,
   dialFluxRange: 5,
-  dialReasimRange: 10,
-  dialReasimCount: 6,
-  dialReasimOutputMod: 1,
-  dialReasimBoilers: false,
-  dialReasimBoilerSpeed: 0.05,
   dialDisableMeltdowns: false,
 }
 
@@ -73,9 +68,10 @@ export const SimulationDefaults = {
   az5: false,
   simulating: false,
   frames: 0,
+  version: "0.2.1", // Added version number
   rbmkStuff: {
-    boilerInputRate: 0,
-    boilerOutputRate: 0,
+    boilerInputRate: 100, // Set to high value by default
+    boilerOutputRate: 100, // Set to high value by default
   },
   place: {
     placing: true,
@@ -102,7 +98,7 @@ export const SimulationDefaults = {
 
 // Asset paths
 export const Assets = {
-  consoleImg: "assets/gui_rbmk_console.png",
+  consoleImg: "/assets/gui_rbmk_console.png",
   az5Sound:
     "https://github.com/HbmMods/Hbm-s-Nuclear-Tech-GIT/blob/master/src/main/resources/assets/hbm/sounds/block/shutdown.ogg?raw=true",
   explosionSound:

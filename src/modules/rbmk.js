@@ -1,5 +1,4 @@
 import { Renderer } from "./renderer.js"
-import { fillArray } from "./utils.js"
 import { Assets } from "./constants.js"
 import { Blank } from "./column-base.js"
 
@@ -22,10 +21,10 @@ export class RBMK {
     this.statsRenderer = statsRenderer
     this.columns = columns
 
-    // Update the consoleImg initialization to use the correct path in dist/assets
+    // Update the consoleImg initialization to use the correct path in
     this.consoleImg = new Image()
     this.consoleImg.crossOrigin = "anonymous"
-    this.consoleImg.src = "assets/gui_rbmk_console.png"
+    this.consoleImg.src = "/assets/gui_rbmk_console.png"
     this.imageLoadFailed = false
 
     // Add error handling for image loading
@@ -213,7 +212,7 @@ export function createRBMK(width = 15, height = 15) {
   const renderer = new Renderer(rbmkCanvas)
   const statsRenderer = new Renderer(statsCanvas)
 
-  const columns = fillArray([], width * height)
+  const columns = new Array(width * height).fill(null)
 
   // Mark the center with a blank column
   const centerIndex = Math.floor((width * height) / 2)
