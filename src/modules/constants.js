@@ -70,8 +70,9 @@ export const SimulationDefaults = {
   frames: 0,
   version: "0.2.1", // Added version number
   rbmkStuff: {
-    boilerInputRate: 100, // Set to high value by default
-    boilerOutputRate: 100, // Set to high value by default
+    // These are now fixed values, not configurable
+    boilerInputRate: 100,
+    boilerOutputRate: 100,
   },
   place: {
     placing: true,

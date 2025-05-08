@@ -286,23 +286,6 @@ function initButtonListeners(rbmk, options) {
       }
     },
 
-    // Add handlers for RBMK options
-    boilerInputRate: () => {
-      const res = prompt("New boiler input rate")
-      const num = Number.parseFloat(res)
-      if (!isNaN(num)) {
-        options.rbmkStuff.boilerInputRate = num
-      }
-    },
-
-    boilerOutputRate: () => {
-      const res = prompt("New boiler output rate")
-      const num = Number.parseFloat(res)
-      if (!isNaN(num)) {
-        options.rbmkStuff.boilerOutputRate = num
-      }
-    },
-
     reasimBoilers: () => {
       window.RBMKDials.dialReasimBoilers = !window.RBMKDials.dialReasimBoilers
     },
@@ -529,11 +512,8 @@ function getConstructor(block) {
   }
 }
 
-/**
- * Initialize the configuration panel
- * @param {Object} rbmk - The RBMK instance
- * @param {Object} options - The simulation options
- */
+// Update the config panel to show fixed input/output rates instead of configurable ones
+
 export function initConfigPanel(rbmk, options) {
   // Update config panel periodically
   setInterval(() => {
@@ -563,13 +543,13 @@ export function initConfigPanel(rbmk, options) {
           configMenu.innerHTML += configContent
         }
       } else {
-        // No column selected, show RBMK options
+        // No column selected, show RBMK options with fixed input/output rates
         configMenu.innerHTML = `
-          <button class="textButton" style="font-size: 27px;" action="boilerInputRate">Boilers water input rate: ${options.rbmkStuff.boilerInputRate}</button>
-          <button class="textButton" style="font-size: 27px;" action="boilerOutputRate">Boilers steam output rate: ${options.rbmkStuff.boilerOutputRate}</button>
-          <button class="textButton" style="font-size: 27px;" action="reasimBoilers">ReaSim boilers: ${window.RBMKDials.dialReasimBoilers}</button>
-          <p style="font-size: 27px;">If you want to edit gamerules, please open developer tools and check the console</p>
-        `
+            <p style="font-size: 27px;">Boilers water input rate: 100 (Maximum)</p>
+            <p style="font-size: 27px;">Boilers steam output rate: 100 (Maximum)</p>
+            <button class="textButton" style="font-size: 27px;" action="reasimBoilers">ReaSim boilers: ${window.RBMKDials.dialReasimBoilers}</button>
+            <p style="font-size: 27px;">If you want to edit gamerules, please open developer tools and check the console</p>
+          `
       }
 
       options.config.prevColumn = selectedIndex

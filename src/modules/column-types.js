@@ -810,7 +810,7 @@ export class Boiler extends Column {
 
     // Only produce steam if temperature is above minimum for the current steam type
     if (this.heat >= currentRange.min) {
-      const HEAT_PER_MB_WATER = RBMKDials.dialBoilerHeatConsumption
+      const HEAT_PER_MB_WATER = 0.1 // Heat extracted per mb of water
       const steamFactor = this.getFactorFromSteam()
 
       // Calculate effective temperature (capped at max for current steam type)
@@ -820,11 +820,16 @@ export class Boiler extends Column {
       const tempFactor = (effectiveTemp - currentRange.min) / (currentRange.max - currentRange.min)
 
       // Calculate steam production based on temperature
-      const baseProduction = window.options.rbmkStuff.boilerInputRate * (0.2 + 0.8 * tempFactor)
+      const maxWaterInput = 100 // Fixed maximum water input rate
+      const baseProduction = maxWaterInput * (0.2 + 0.8 * tempFactor)
 
       // Ensure we have enough feedwater
       const waterUsed = Math.min(baseProduction, this.feedwater)
       const steamProduced = Math.floor((waterUsed * 100) / steamFactor)
+
+      // Extract heat from the system - this is the cooling effect
+      const heatExtracted = waterUsed * HEAT_PER_MB_WATER * (1 + this.steamType * 0.5)
+      this.heat -= heatExtracted
 
       // Update feedwater and steam
       this.feedwater -= waterUsed
@@ -836,25 +841,27 @@ export class Boiler extends Column {
     super.update(ticks, rbmk)
 
     // Process steam through turbines
-    const outputRate = window.options.rbmkStuff.boilerOutputRate
+    const maxOutputRate = 100 // Fixed maximum output rate
 
-    // Only process steam if we have steam and the output rate is positive
-    if (this.steam > 0 && outputRate > 0) {
+    // Only process steam if we have steam
+    if (this.steam > 0) {
       // Calculate how much steam to process (limited by available steam and output rate)
-      const steamToProcess = Math.min(this.steam, outputRate)
+      const steamToProcess = Math.min(this.steam, maxOutputRate)
       this.steam -= steamToProcess
 
       // Calculate power output directly from processed steam
       const trait = this.getTraitFromSteam()
 
       // Calculate power based on steam type efficiency and energy content
-      this.producedPower = (steamToProcess * trait.efficiency * trait.heatEnergy) / 100
+      // Significantly reduced power output for more realism
+      this.producedPower = (steamToProcess * trait.efficiency * trait.heatEnergy) / 1000
 
       // Convert to MW with appropriate scaling for steam type
-      const steamTypeMultiplier = Math.pow(4, this.steamType) // 1, 4, 16, 64 for steam types 0-3
+      // Reduced multiplier for more realistic power generation
+      const steamTypeMultiplier = Math.pow(2, this.steamType) // 1, 2, 4, 8 for steam types 0-3
       this.producedMW = (this.producedPower * steamTypeMultiplier) / 100
     } else {
-      // No steam or output rate is zero
+      // No steam
       this.producedPower = 0
       this.producedMW = 0
     }
@@ -863,41 +870,6 @@ export class Boiler extends Column {
     if (this.feedwater < this.feedwaterMax * 0.5) {
       this.feedwater = this.feedwaterMax
     }
-  }
-
-  /**
-   * Get the heat from steam
-   * @returns {number} - The minimum temperature needed for this steam type
-   */
-  getHeatFromSteam() {
-    const minTemps = [100, 180, 350, 600]
-    return minTemps[this.steamType]
-  }
-
-  /**
-   * Get the factor from steam
-   * @returns {number} - The factor
-   */
-  getFactorFromSteam() {
-    const factors = [1, 10, 100, 1000]
-    return factors[this.steamType]
-  }
-
-  /**
-   * Get the trait from steam
-   * @returns {Object} - The trait
-   */
-  getTraitFromSteam() {
-    // More realistic power generation values based on steam type
-    // Higher density steam types have better efficiency and energy output
-    const traits = [
-      { amountReq: 100, amountProduced: 1, efficiency: 0.8, heatEnergy: 200 }, // Normal steam
-      { amountReq: 10, amountProduced: 1, efficiency: 1.2, heatEnergy: 300 }, // Dense steam
-      { amountReq: 1, amountProduced: 1, efficiency: 1.5, heatEnergy: 450 }, // Super dense steam
-      { amountReq: 1, amountProduced: 10, efficiency: 2.0, heatEnergy: 600 }, // Ultra dense steam
-    ]
-
-    return traits[this.steamType]
   }
 
   /**
@@ -932,7 +904,10 @@ export class Boiler extends Column {
       <p style="color: yellow; margin: 0px;">Steam Type: ${this.compressors[this.steamType]}</p>
       <p style="color: cyan; margin: 0px;">Temperature Range: ${currentRange.min}-${currentRange.max}°C</p>
       <p style="color: white; margin: 0px;">Efficiency: ${efficiencyText}</p>
-      <p style="color: green; margin: 0px;">Power output: ${this.producedMW.toFixed(2)} MW</p>`
+      <p style="color: green; margin: 0px;">Power output: ${this.producedMW.toFixed(2)} MW</p>
+      <p style="color: blue; margin: 0px;">Water input rate: 100 (Maximum)</p>
+      <p style="color: cyan; margin: 0px;">Steam output rate: 100 (Maximum)</p>
+      <p style="color: orange; margin: 0px;">Heat extraction: ${(0.1 * (1 + this.steamType * 0.5)).toFixed(2)}°C per unit</p>`
   }
 
   /**
