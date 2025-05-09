@@ -251,9 +251,16 @@ export class Fuel extends Column {
         return
       }
 
-      this.fluxFast = 0
-      this.fluxSlow = 0
+      // Store flux values for visualization - don't amplify them
+      if (this.moderated) {
+        this.fluxSlow = fluxOut
+        this.fluxFast = 0
+      } else {
+        this.fluxFast = fluxOut
+        this.fluxSlow = 0
+      }
 
+      // Spread flux
       this.spreadFlux(rType, fluxOut, rbmk)
     }
   }
@@ -765,24 +772,65 @@ export class Boiler extends Column {
       })
     }
 
-    this.feedwater = 10000 // Start with max feedwater
-    this.feedwaterMax = 10000
+    // More realistic units - liters for water/steam
+    this.feedwater = 5000 // Start with half capacity
+    this.feedwaterMax = 10000 // 10,000 liters max capacity
 
     this.steam = 0
-    this.steamMax = 1000000
+    this.steamMax = 50000 // 50,000 liters of steam max
 
     this.steamType = 0
     this.compressors = ["Steam", "Dense Steam", "Super Dense Steam", "Ultra Dense Steam"]
 
     // These other variables are for boiler output rate
     this.steam2 = 0
-    this.steamMax2 = 512000
+    this.steamMax2 = 25000 // 25,000 liters
 
     this.spentSteam = 0
-    this.spentSteamMax = 10240000
+    this.spentSteamMax = 100000 // 100,000 liters
 
     this.producedPower = 0
-    this.producedMW = 0 // New realistic power unit in Megawatts
+    this.producedMW = 0 // Power output in Megawatts
+
+    // Water consumption and heat extraction rates
+    this.waterConsumptionRate = 200 // Liters per tick
+    this.heatExtractionRate = 0.1 // Base heat extraction per liter of water
+  }
+
+  /**
+   * Get the heat from steam
+   * @returns {number} - The minimum temperature needed for this steam type
+   */
+  getHeatFromSteam() {
+    if (this.steamType === 0) return 100 // Regular steam: 100°C
+    if (this.steamType === 1) return 250 // Dense steam: 250°C
+    if (this.steamType === 2) return 400 // Super dense steam: 400°C
+    if (this.steamType === 3) return 600 // Ultra dense steam: 600°C
+    return 100
+  }
+
+  /**
+   * Get the factor from steam
+   * @returns {number} - The factor
+   */
+  getFactorFromSteam() {
+    if (this.steamType === 0) return 1
+    if (this.steamType === 1) return 5
+    if (this.steamType === 2) return 20
+    if (this.steamType === 3) return 50
+    return 1
+  }
+
+  /**
+   * Get the trait from steam
+   * @returns {Object} - The trait
+   */
+  getTraitFromSteam() {
+    if (this.steamType === 0) return { amountReq: 100, amountProduced: 1, efficiency: 0.7, heatEnergy: 100 }
+    if (this.steamType === 1) return { amountReq: 20, amountProduced: 1, efficiency: 0.8, heatEnergy: 200 }
+    if (this.steamType === 2) return { amountReq: 5, amountProduced: 1, efficiency: 0.9, heatEnergy: 400 }
+    if (this.steamType === 3) return { amountReq: 2, amountProduced: 1, efficiency: 1.0, heatEnergy: 800 }
+    return { amountReq: 100, amountProduced: 1, efficiency: 0.7, heatEnergy: 100 }
   }
 
   /**
@@ -793,42 +841,26 @@ export class Boiler extends Column {
   update(ticks, rbmk) {
     // Keep values within limits
     if (this.feedwater > this.feedwaterMax) this.feedwater = this.feedwaterMax
+    if (this.spentSteam > this.spentSteamMax) this.spentSteam = this.spentSteamMax
 
-    // Boiling - temperature-based steam production with caps for each steam type
-    const minTemp = 100 // Minimum temperature for steam production
-
-    // Define temperature ranges for each steam type
-    const tempRanges = [
-      { min: 100, max: 180 }, // Normal steam: 100-180°C
-      { min: 180, max: 350 }, // Dense steam: 180-350°C
-      { min: 350, max: 600 }, // Super dense steam: 350-600°C
-      { min: 600, max: 1000 }, // Ultra dense steam: 600-1000°C
-    ]
-
-    // Current steam type's temperature range
-    const currentRange = tempRanges[this.steamType]
+    // Boiling - temperature-based steam production
+    const minTemp = this.getHeatFromSteam()
 
     // Only produce steam if temperature is above minimum for the current steam type
-    if (this.heat >= currentRange.min) {
-      const HEAT_PER_MB_WATER = 0.1 // Heat extracted per mb of water
+    if (this.heat >= minTemp) {
+      // Calculate how much water we can process based on temperature
+      // Higher temperature = more efficient water processing
+      const tempFactor = Math.min(1, (this.heat - minTemp) / 200) // 0-1 scale based on temperature
+      const maxWaterUsage = this.waterConsumptionRate * tempFactor
+
+      // Calculate steam production
       const steamFactor = this.getFactorFromSteam()
-
-      // Calculate effective temperature (capped at max for current steam type)
-      const effectiveTemp = Math.min(this.heat, currentRange.max)
-
-      // Calculate temperature factor (0-1 range based on where we are in the temperature range)
-      const tempFactor = (effectiveTemp - currentRange.min) / (currentRange.max - currentRange.min)
-
-      // Calculate steam production based on temperature
-      const maxWaterInput = 100 // Fixed maximum water input rate
-      const baseProduction = maxWaterInput * (0.2 + 0.8 * tempFactor)
-
-      // Ensure we have enough feedwater
-      const waterUsed = Math.min(baseProduction, this.feedwater)
+      const waterUsed = Math.min(maxWaterUsage, this.feedwater)
       const steamProduced = Math.floor((waterUsed * 100) / steamFactor)
 
       // Extract heat from the system - this is the cooling effect
-      const heatExtracted = waterUsed * HEAT_PER_MB_WATER * (1 + this.steamType * 0.5)
+      // Higher steam types extract more heat per unit of water
+      const heatExtracted = waterUsed * this.heatExtractionRate * (1 + this.steamType * 0.5)
       this.heat -= heatExtracted
 
       // Update feedwater and steam
@@ -840,74 +872,98 @@ export class Boiler extends Column {
 
     super.update(ticks, rbmk)
 
-    // Process steam through turbines
-    const maxOutputRate = 100 // Fixed maximum output rate
+    // Process steam through turbines - fixed rate
+    const outputRate = 200 // Liters per tick
+    const actualOutput = Math.min(outputRate, this.steam)
+    this.steam -= actualOutput
+    this.steam2 += actualOutput
 
-    // Only process steam if we have steam
-    if (this.steam > 0) {
-      // Calculate how much steam to process (limited by available steam and output rate)
-      const steamToProcess = Math.min(this.steam, maxOutputRate)
-      this.steam -= steamToProcess
+    if (this.steam2 > this.steamMax2) this.steam2 = this.steamMax2
 
-      // Calculate power output directly from processed steam
+    // Turbine (large turbine)
+    this.producedPower = 0
+    this.producedMW = 0
+
+    if (actualOutput > 0) {
       const trait = this.getTraitFromSteam()
+      const eff = trait.efficiency
 
-      // Calculate power based on steam type efficiency and energy content
-      // Significantly reduced power output for more realism
-      this.producedPower = (steamToProcess * trait.efficiency * trait.heatEnergy) / 1000
+      if (eff > 0) {
+        const inputOps = Math.floor(this.steam2 / trait.amountReq)
+        const outputOps = this.spentSteamMax - this.spentSteam
+        const cap = Math.ceil(this.steam2 / trait.amountReq / 5)
+        const ops = Math.min(inputOps, Math.min(outputOps, cap))
 
-      // Convert to MW with appropriate scaling for steam type
-      // Reduced multiplier for more realistic power generation
-      const steamTypeMultiplier = Math.pow(2, this.steamType) // 1, 2, 4, 8 for steam types 0-3
-      this.producedMW = (this.producedPower * steamTypeMultiplier) / 100
-    } else {
-      // No steam
-      this.producedPower = 0
-      this.producedMW = 0
+        this.steam2 -= ops * trait.amountReq
+        this.spentSteam += ops * trait.amountProduced
+
+        // Calculate power based on steam type, efficiency, and heat energy
+        this.producedPower = ops * trait.heatEnergy * eff
+
+        // Convert to MW with appropriate scaling for steam type
+        // Higher steam types produce more power per unit
+        const steamTypeMultiplier = Math.pow(2, this.steamType) // 1, 2, 4, 8 for steam types 0-3
+        this.producedMW = (this.producedPower * steamTypeMultiplier) / 100
+      }
     }
 
-    // Auto-refill feedwater to keep system running
-    if (this.feedwater < this.feedwaterMax * 0.5) {
-      this.feedwater = this.feedwaterMax
+    // Condensation - convert spent steam back to feedwater
+    const condensationRate = 300 // Liters per tick
+    const convert = Math.min(condensationRate, Math.min(this.spentSteam, this.feedwaterMax - this.feedwater))
+    this.spentSteam -= convert
+    this.feedwater += convert
+
+    // Auto-refill feedwater if it gets too low (simulates continuous water supply)
+    if (this.feedwater < this.feedwaterMax * 0.1) {
+      const refillAmount = this.feedwaterMax * 0.1
+      this.feedwater += refillAmount
+      if (this.feedwater > this.feedwaterMax) this.feedwater = this.feedwaterMax
     }
   }
 
-  /**
-   * Draw the column
-   * @param {number} ticks - The current tick
-   */
+  // Update the draw method to show more detailed information
   draw(ticks) {
     // Get temperature range for current steam type
-    const tempRanges = [
-      { min: 100, max: 180 }, // Normal steam: 100-180°C
-      { min: 180, max: 350 }, // Dense steam: 180-350°C
-      { min: 350, max: 600 }, // Super dense steam: 350-600°C
-      { min: 600, max: 1000 }, // Ultra dense steam: 600-1000°C
-    ]
-    const currentRange = tempRanges[this.steamType]
+    const minTemp = this.getHeatFromSteam()
 
     // Calculate efficiency based on temperature
     let efficiencyText = ""
-    if (this.heat < currentRange.min) {
-      efficiencyText = `<span style="color: red;">Too cold (min: ${currentRange.min}°C)</span>`
-    } else if (this.heat > currentRange.max) {
-      efficiencyText = `<span style="color: orange;">Too hot (max: ${currentRange.max}°C)</span>`
+    if (this.heat < minTemp) {
+      efficiencyText = `<span style="color: red;">Too cold (min: ${minTemp}°C)</span>`
     } else {
-      const efficiency = Math.floor(((this.heat - currentRange.min) / (currentRange.max - currentRange.min)) * 100)
+      const efficiency = Math.min(100, Math.floor(((this.heat - minTemp) / 200) * 100))
       efficiencyText = `<span style="color: green;">${efficiency}% efficient</span>`
     }
 
+    // Calculate water consumption rate based on temperature
+    const tempFactor = Math.min(1, (this.heat - minTemp) / 200)
+    const actualWaterUsage = Math.floor(this.waterConsumptionRate * tempFactor)
+
+    // Calculate heat extraction
+    const heatExtraction = actualWaterUsage * this.heatExtractionRate * (1 + this.steamType * 0.5)
+
     this.tooltipText = `<b>BOILER</b><br>
-      <p style="color: yellow; margin: 0px;">Column temperature: ${this.heat.toFixed(1)}°C</p>
-      <p style="color: blue; margin: 0px;">Feedwater: ${this.feedwater} / ${this.feedwaterMax}</p>
-      <p style="color: white; margin: 0px;">Steam: ${this.steam} / ${this.steamMax}</p>
-      <p style="color: yellow; margin: 0px;">Steam Type: ${this.compressors[this.steamType]}</p>
-      <p style="color: cyan; margin: 0px;">Temperature Range: ${currentRange.min}-${currentRange.max}°C</p>
-      <p style="color: white; margin: 0px;">Efficiency: ${efficiencyText}</p>
-      <p style="color: green; margin: 0px;">Power output: ${this.producedMW.toFixed(2)} MW</p>
-      <p style="color: blue; margin: 0px;">Water input rate: 100 (Maximum)</p>
-      <p style="color: cyan; margin: 0px;">Steam output rate: 100 (Maximum)</p>
-      <p style="color: orange; margin: 0px;">Heat extraction: ${(0.1 * (1 + this.steamType * 0.5)).toFixed(2)}°C per unit</p>`
+    <p style="color: yellow; margin: 0px;">Column temperature: ${this.heat.toFixed(1)}°C</p>
+    <p style="color: blue; margin: 0px;">Feedwater: ${this.feedwater.toFixed(0)} / ${this.feedwaterMax} L</p>
+    <p style="color: white; margin: 0px;">Steam: ${this.steam.toFixed(0)} / ${this.steamMax} L</p>
+    <p style="color: yellow; margin: 0px;">Steam Type: ${this.compressors[this.steamType]}</p>
+    <p style="color: cyan; margin: 0px;">Min Temperature: ${minTemp}°C</p>
+    <p style="color: white; margin: 0px;">Efficiency: ${efficiencyText}</p>
+    <p style="color: green; margin: 0px;">Power output: ${this.producedMW.toFixed(2)} MW</p>
+    <p style="color: blue; margin: 0px;">Water usage: ${actualWaterUsage.toFixed(0)} L/tick</p>
+    <p style="color: orange; margin: 0px;">Heat extraction: ${heatExtraction.toFixed(1)}°C/tick</p>`
+  }
+
+  /**
+   * Reset the column
+   */
+  reset() {
+    this.feedwater = 0
+    this.steam = 0
+    this.steam2 = 0
+    this.spentSteam = 0
+    this.producedPower = 0
+    this.producedMW = 0
   }
 
   /**

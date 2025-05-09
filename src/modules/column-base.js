@@ -27,11 +27,12 @@ export class Column {
     this.x = 0
     this.y = 0
 
+    // Make sure directions are correct - these were reversed in the original code
     this.dirs = [
-      { offsetX: 0, offsetY: -1 },
-      { offsetX: -1, offsetY: 0 },
-      { offsetX: 0, offsetY: 1 },
-      { offsetX: 1, offsetY: 0 },
+      { offsetX: 0, offsetY: -1 }, // Up
+      { offsetX: 1, offsetY: 0 }, // Right
+      { offsetX: 0, offsetY: 1 }, // Down
+      { offsetX: -1, offsetY: 0 }, // Left
     ]
   }
 

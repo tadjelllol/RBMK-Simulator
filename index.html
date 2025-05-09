@@ -11,9 +11,21 @@
   <body>
     <!-- Changelog Modal -->
     <div id="changelog" class="hide">
-      <h2 style="margin-top: 2px;">v0.2.1</h2>
-      <h5 style="margin-top: -16px;color: #808080;margin-bottom: 14px;">Major improvements - 18/03/2025</h5><hr>
+      <h2 style="margin-top: 2px;">v0.2.2</h2>
+      <h5 style="margin-top: -16px;color: #808080;margin-bottom: 14px;">Major improvements - 19/03/2025</h5><hr>
       <div id="innerChangelog" style="height: 130px;overflow-y:auto">
+        • Added flux visualization mode<br>
+        • Improved boiler system with realistic units (liters)<br>
+        • Enhanced heat extraction mechanics for better balance<br>
+        • Added temperature-based efficiency for boilers<br>
+        • Improved power generation calculations<br>
+        • Added view mode toggle (Normal/Flux/Temperature)<br>
+        • Updated graph colors to match flux visualization<br>
+        • Fixed blank column placement bug<br><br>
+        
+        Previous changelog:<br><br>
+        
+        v0.2.1:<br>
         • Fixed blank column placement bug<br>
         • Improved graph visualization with better styling<br>
         • Removed 3D view for better performance<br>
@@ -23,27 +35,14 @@
         • Set default boiler rates to maximum<br>
         • Implemented temperature-based steam production<br>
         • Added proper temperature ranges for each steam type<br>
-        • Fixed steam conversion and power generation<br>
-        • Previous changelog:<br><br>
+        • Fixed steam conversion and power generation<br><br>
         
         v0.1.0:<br>
         • Enhanced simulation physics for more realistic behavior<br>
         • Added temperature gradient visualization<br>
         • Improved UI with dark mode and better controls<br>
         • Added neutron flux visualization<br>
-        • Added emergency cooling system simulation<br><br>
-        
-        v0.0.2b:<br>
-        Nothing has changed since the last release other than this changelog UI.<br>
-        Consider also checking <a href="https://voxelstice.github.io/ntm-zirnox-simulator">NTM ZIRNOX Simulator.</a><br>
-        Other than that, here's the v0.0.2a changelog:<br><br>
-
-        • Added rescaling for bigger RBMK designs (ui elements dont move upon rescaling yet)<br>
-        • RBMK fuels now have proper naming <br>
-        • Control rod criticality (surge)<br>
-        • This changelog button<br>
-        • Automatic control rods (not tested)<br>
-        • Radiation leak counter
+        • Added emergency cooling system simulation<br>
       </div><hr>
       <button onclick="document.getElementById('changelog').className = 'hide'" style="margin-top: 4px;">Close</button>
     </div>
@@ -110,7 +109,16 @@
         </div>
         
         <div class="panel">
-          <p>This simulator uses Large Turbines and Auxiliary Cooling Towers for the boilers.</p>
+          <div class="panel-header">
+            <h2 class="panel-title">Reactor Guide</h2>
+          </div>
+          <p>
+            <span class="flux-fast">Red arrows</span> show fast neutron flux.<br>
+            <span class="flux-slow">Green arrows</span> show slow neutron flux.<br>
+            <br>
+            Fewer boilers = higher heat = more power (but more dangerous)<br>
+            More boilers = safer but less power per boiler
+          </p>
         </div>
       </div>
 

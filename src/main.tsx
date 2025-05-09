@@ -1,10 +1,490 @@
-import { StrictMode } from 'react';
-import { createRoot } from 'react-dom/client';
-import App from './App.tsx';
-import './index.css';
+/* Main Styles */
+:root {
+  --primary-bg: #101010;
+  --secondary-bg: rgba(0, 0, 0, 0.6);
+  --panel-bg: rgba(0, 0, 0, 0.4);
+  --border-color: #454545;
+  --highlight-color: #007fff;
+  --text-color: #ffffff;
+  --danger-color: #ff3f3f;
+  --success-color: #2ecc71;
+  --warning-color: #f39c12;
+  --flux-fast-color: #ff3232;
+  --flux-slow-color: #32ff32;
+}
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <App />
-  </StrictMode>
-);
+* {
+  font-family: "Courier New", monospace;
+  color: var(--text-color);
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--primary-bg);
+  margin: 0;
+  padding: 20px;
+}
+
+/* Layout */
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+.sidebar {
+  flex: 0 0 240px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.main-panel {
+  flex: 1;
+  min-width: 480px;
+  max-width: 560px;
+}
+
+.data-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  min-width: 300px;
+}
+
+/* Panels */
+.panel {
+  background-color: var(--panel-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 15px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.panel-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+/* Canvas containers */
+.canvas-container {
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.canvas-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+/* Buttons */
+.btn {
+  font-size: 14px;
+  padding: 8px 12px;
+  background-color: var(--secondary-bg);
+  border: 2px solid var(--border-color);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+.btn:hover {
+  border-color: var(--highlight-color);
+  background-color: rgba(0, 127, 255, 0.1);
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+.btn-primary {
+  background-color: var(--highlight-color);
+  border-color: var(--highlight-color);
+}
+
+.btn-danger {
+  background-color: rgba(255, 0, 0, 0.3);
+  border-color: var(--danger-color);
+}
+
+.btn-warning {
+  background-color: rgba(243, 156, 18, 0.3);
+  border-color: var(--warning-color);
+}
+
+.btn-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 15px;
+}
+
+/* Tooltip */
+.tooltip {
+  position: fixed;
+  z-index: 100;
+  background-color: rgba(0, 0, 0, 0.9);
+  border: 1px solid var(--highlight-color);
+  padding: 10px 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  pointer-events: none;
+  max-width: 300px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+/* Stats Display */
+.stat-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.stat-box {
+  background-color: var(--secondary-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: 10px;
+}
+
+.stat-title {
+  font-size: 0.9rem;
+  opacity: 0.8;
+  margin-bottom: 5px;
+}
+
+.stat-value {
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+
+/* Tools panel */
+.tools-container {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+}
+
+.tool-item {
+  width: 32px;
+  height: 32px;
+  background-color: var(--secondary-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.tool-item:hover {
+  border-color: var(--highlight-color);
+}
+
+.tool-item.selected {
+  border-color: var(--highlight-color);
+  background-color: rgba(0, 127, 255, 0.3);
+}
+
+/* Reactor grid */
+.reactor-container {
+  position: relative;
+}
+
+/* Fuel grid */
+.fuel-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+}
+
+.fuel-item {
+  width: 32px;
+  height: 32px;
+  background-color: var(--secondary-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.fuel-item:hover {
+  border-color: var(--highlight-color);
+}
+
+/* View toggle */
+.view-toggle {
+  display: flex;
+  gap: 0;
+  margin-bottom: 10px;
+  background-color: var(--secondary-bg);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.view-toggle-btn {
+  flex: 1;
+  padding: 8px 12px;
+  background: transparent;
+  border: none;
+  border-right: 1px solid var(--border-color);
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s ease;
+}
+
+.view-toggle-btn:last-child {
+  border-right: none;
+}
+
+.view-toggle-btn.active {
+  background-color: var(--highlight-color);
+}
+
+/* Modal */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease;
+}
+
+.modal.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal-content {
+  background-color: var(--primary-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 20px;
+  width: 90%;
+  max-width: 500px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.modal-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.5rem;
+}
+
+/* Text button */
+.textButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px 10px;
+  margin: 2px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+  width: 100%;
+  text-align: left;
+}
+
+.textButton:hover {
+  background-color: var(--highlight-color);
+}
+
+/* Misc utility classes */
+.text-danger {
+  color: var(--danger-color);
+}
+.text-success {
+  color: var(--success-color);
+}
+.text-warning {
+  color: var(--warning-color);
+}
+
+.mt-2 {
+  margin-top: 10px;
+}
+.mb-2 {
+  margin-bottom: 10px;
+}
+
+.noMargin {
+  margin: 0;
+}
+
+.d-flex {
+  display: flex;
+}
+.justify-between {
+  justify-content: space-between;
+}
+.align-center {
+  align-items: center;
+}
+.flex-column {
+  flex-direction: column;
+}
+.gap-1 {
+  gap: 5px;
+}
+.gap-2 {
+  gap: 10px;
+}
+
+.hide {
+  display: none;
+}
+
+/* Configuration panel */
+#config_main {
+  background-color: var(--panel-bg);
+  color: var(--text-color);
+  padding: 10px;
+  border-radius: 6px;
+}
+
+#config_main p {
+  color: var(--text-color);
+  margin: 5px 0;
+}
+
+#config_main button {
+  color: var(--text-color);
+}
+
+/* Changelog */
+#changelog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: var(--panel-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 20px;
+  z-index: 1000;
+  width: 90%;
+  max-width: 500px;
+}
+
+#changelog.hide {
+  display: none;
+}
+
+#changelog button {
+  background-color: var(--secondary-bg);
+  border: 1px solid var(--border-color);
+  color: var(--text-color);
+  padding: 5px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#changelog button:hover {
+  background-color: var(--highlight-color);
+}
+
+#innerChangelog {
+  background-color: var(--secondary-bg);
+  padding: 10px;
+  border-radius: 4px;
+  margin: 10px 0;
+}
+
+#innerChangelog a {
+  color: var(--highlight-color);
+  text-decoration: none;
+}
+
+#innerChangelog a:hover {
+  text-decoration: underline;
+}
+
+/* Add styles for the improved graphs */
+.graph-box {
+  margin-bottom: 25px;
+  background-color: var(--panel-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 15px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.graph-box h3 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 1.1rem;
+  color: var(--text-color);
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 8px;
+}
+
+.graph-box canvas {
+  width: 100% !important;
+  height: 250px !important;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}
+
+/* Make the right panel wider for better graph display */
+#right-panel {
+  flex: 0 0 320px;
+}
+
+/* Flux visualization styles */
+#flux-viz {
+  pointer-events: none;
+}
+
+/* Flux colors */
+.flux-fast {
+  color: var(--flux-fast-color);
+}
+
+.flux-slow {
+  color: var(--flux-slow-color);
+}

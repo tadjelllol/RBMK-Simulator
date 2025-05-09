@@ -7,13 +7,15 @@ export const RBMKDials = {
   dialDiffusionMod: 1,
   dialHeatProvision: 0.2,
   dialColumnHeight: 4,
-  dialBoilerHeatConsumption: 0.1,
+  dialBoilerHeatConsumption: 0.1, // Heat extracted per liter of water
   dialControlSpeed: 1,
   dialReactivityMod: 1,
   dialOutgasserSpeedMod: 1,
   dialControlSurgeMod: 1,
   dialFluxRange: 5,
   dialDisableMeltdowns: false,
+  dialReasimBoilers: false,
+  dialReasimCount: 8,
 }
 
 // Enums
@@ -63,12 +65,20 @@ export const ControlAutoFunctions = {
 
 export const InterpolationText = ["Linear", "Quadratic", "Inverse Quadratic"]
 
+// View modes
+export const ViewModes = {
+  NORMAL: "normal",
+  FLUX: "flux",
+  TEMPERATURE: "temperature",
+}
+
 // Simulation options
 export const SimulationDefaults = {
   az5: false,
   simulating: false,
   frames: 0,
-  version: "0.2.1", // Added version number
+  version: "0.2.2", // Updated version number
+  viewMode: ViewModes.NORMAL,
   rbmkStuff: {
     // These are now fixed values, not configurable
     boilerInputRate: 100,
