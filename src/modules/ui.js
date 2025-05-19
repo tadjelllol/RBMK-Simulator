@@ -1,4 +1,4 @@
-import { createElement, averageCalc } from "./utils.js"
+import { averageCalc } from "./utils.js"
 import { fuels } from "./fuel-types.js"
 import { fuelNames } from "./fuel-names.js"
 import { SimulationDefaults } from "./constants.js"
@@ -25,9 +25,8 @@ import {
  */
 export function initUI(rbmk, options) {
   // Setup tooltip
-  const tooltip = createElement("div", {
-    className: "tooltip",
-  })
+  const tooltip = document.createElement("div")
+  tooltip.className = "tooltip"
   document.body.appendChild(tooltip)
   window.tooltip = tooltip
 
@@ -53,13 +52,12 @@ export function initUI(rbmk, options) {
   initReactorInteraction(rbmk, options)
 }
 
-/**
- * Initialize the fuel panel
- * @param {Object} rbmk - The RBMK instance
- * @param {Object} options - The simulation options
- */
+// Fix the initFuelPanel function to properly set up fuel elements with event handlers
 function initFuelPanel(rbmk, options) {
   const fuelsContainer = document.getElementById("fuels")
+
+  // Clear existing fuel elements
+  fuelsContainer.innerHTML = ""
 
   fuels.forEach((fuel, index) => {
     const test = new fuel()
@@ -67,15 +65,27 @@ function initFuelPanel(rbmk, options) {
     const selfigniting =
       test.selfRate > 0 || test.function === "SIGMOID" ? `<p style="color: red; margin: 0px;">Self-igniting</p>` : ""
 
-    const element = createElement("img", {
-      src: test.texture,
-      className: "fuel-item",
-      onclick: "fuelClick()",
-      dataset: {
-        fuelname: index,
-      },
-      tooltip: `<b>${fuelNames[test.fullName].rod}</b><br><p style="color: grey; margin: 0px;">${fuelNames[test.fullName].fullName}</p>${selfigniting}<p style="color: blue; margin: 0px;">Splits with: ${test.nType}</p><p style="color: blue; margin: 0px;">Splits into: ${test.rType}</p><p style="color: yellow; margin: 0px;">Flux function: <span style="color: white;">${test.getFuncDescription()}</span></p><p style="color: yellow; margin: 0px;">Function type: ${test.displayFunc}</p><p style="color: yellow; margin: 0px;">Xenon gen function: <span style="color: white;">x * ${test.xGen}</span></p><p style="color: yellow; margin: 0px;">Xenon burn function: <span style="color: white;">x² * ${test.xBurn}</span></p><p style="color: gold; margin: 0px;">Heat per flux: ${test.heat}°C</p><p style="color: gold; margin: 0px;">Diffusion: ${test.diffusion}¹/²</p><p style="color: red; margin: 0px;">Melting point: ${test.meltingPoint.toFixed(1)}°C</p>`,
-    })
+    const element = document.createElement("img")
+    element.src = test.texture
+    element.className = "fuel-item"
+    element.setAttribute("onclick", "fuelClick()")
+    element.setAttribute("data-fuelname", index.toString())
+    element.setAttribute(
+      "tooltip",
+      `<b>${fuelNames[test.fullName].rod}</b><br><p style="color: grey; margin: 0px;">${fuelNames[test.fullName].fullName}</p>${selfigniting}<p style="color: blue; margin: 0px;">Splits with: ${test.nType}</p><p style="color: blue; margin: 0px;">Splits into: ${test.rType}</p><p style="color: yellow; margin: 0px;">Flux function: <span style="color: white;">${test.getFuncDescription()}</span></p><p style="color: yellow; margin: 0px;">Function type: ${test.displayFunc}</p><p style="color: yellow; margin: 0px;">Xenon gen function: <span style="color: white;">x * ${test.xGen}</span></p><p style="color: yellow; margin: 0px;">Xenon burn function: <span style="color: white;">x² * ${test.xBurn}</span></p><p style="color: gold; margin: 0px;">Heat per flux: ${test.heat}°C</p><p style="color: gold; margin: 0px;">Diffusion: ${test.diffusion}¹/²</p><p style="color: red; margin: 0px;">Melting point: ${test.meltingPoint.toFixed(1)}°C</p>`,
+    )
+
+    // Add a loading event to debug image loading
+    element.onload = () => {
+      console.log(`Loaded fuel image for ${test.fullName}`)
+    }
+
+    element.onerror = () => {
+      console.error(`Failed to load fuel image for ${test.fullName}: ${test.texture}`)
+      // Set a fallback image
+      element.src =
+        "https://raw.githubusercontent.com/HbmMods/Hbm-s-Nuclear-Tech-GIT/master/src/main/resources/assets/hbm/textures/items/rbmk_fuel_empty.png"
+    }
 
     fuelsContainer.appendChild(element)
   })
@@ -108,18 +118,18 @@ function initStatsPanel(rbmk, options) {
   ]
 
   stats.forEach((stat) => {
-    const statBox = createElement("div", { className: "stat-box", id: stat.id })
+    const statBox = document.createElement("div")
+    statBox.className = "stat-box"
+    statBox.id = stat.id
 
-    const title = createElement(
-      "div",
-      {
-        className: "stat-title",
-        tooltip: stat.tooltip,
-      },
-      stat.title,
-    )
+    const title = document.createElement("div")
+    title.className = "stat-title"
+    title.tooltip = stat.tooltip
+    title.textContent = stat.title
 
-    const value = createElement("div", { className: "stat-value" }, stat.value)
+    const value = document.createElement("div")
+    value.className = "stat-value"
+    value.textContent = stat.value
 
     statBox.appendChild(title)
     statBox.appendChild(value)
@@ -324,7 +334,7 @@ function initButtonListeners(rbmk, options) {
 
   // Make button function available globally
   window.button = () => {
-    const btn = document.elementFromPoint(mPos[0], mPos[1])
+    const btn = document.elementFromPoint(window.mPos[0], window.mPos[1])
     const action = btn.getAttribute("action")
     if (buttonActions[action]) {
       buttonActions[action](btn)
@@ -395,8 +405,8 @@ function initReactorInteraction(rbmk, options) {
   document.addEventListener("click", (e) => {
     const rbmkCanvas = document.getElementById("rbmk")
     const rect = rbmkCanvas.getBoundingClientRect()
-    const x = mPos[0] - rect.x
-    const y = mPos[1] - rect.y
+    const x = window.mPos[0] - rect.x
+    const y = window.mPos[1] - rect.y
     const maxX = rbmk.width * 32
     const maxY = rbmk.height * 32
 
@@ -437,15 +447,15 @@ function initReactorInteraction(rbmk, options) {
     // Check if click is on a tool
     const toolsRect = toolsCanvas.getBoundingClientRect()
     if (
-      mPos[0] >= toolsRect.x &&
-      mPos[0] <= toolsRect.right &&
-      mPos[1] >= toolsRect.y &&
-      mPos[1] <= toolsRect.bottom &&
+      window.mPos[0] >= toolsRect.x &&
+      window.mPos[0] <= toolsRect.right &&
+      window.mPos[1] >= toolsRect.y &&
+      window.mPos[1] <= toolsRect.bottom &&
       !options.simulating &&
       options.place.placing
     ) {
-      const toolX = Math.floor((mPos[0] - toolsRect.x) / 32)
-      const toolY = Math.floor((mPos[1] - toolsRect.y) / 32)
+      const toolX = Math.floor((window.mPos[0] - toolsRect.x) / 32)
+      const toolY = Math.floor((window.mPos[1] - toolsRect.y) / 32)
       const toolIndex = toolY * 7 + toolX
 
       if (toolIndex >= 0 && toolIndex < options.place.blocks.length) {
@@ -462,14 +472,14 @@ function initReactorInteraction(rbmk, options) {
 
   // Update tooltip visibility
   setInterval(() => {
-    tooltip.style.visibility = "hidden"
-    tooltip.style.left = mPos[0] + 15 + "px"
-    tooltip.style.top = mPos[1] + window.scrollY + "px"
+    window.tooltip.style.visibility = "hidden"
+    window.tooltip.style.left = window.mPos[0] + 15 + "px"
+    window.tooltip.style.top = window.mPos[1] + window.scrollY + "px"
 
-    const hoveringOn = document.elementFromPoint(mPos[0], mPos[1])
+    const hoveringOn = document.elementFromPoint(window.mPos[0], window.mPos[1])
     if (hoveringOn && hoveringOn.getAttribute("tooltip")) {
-      tooltip.innerHTML = hoveringOn.getAttribute("tooltip")
-      tooltip.style.visibility = "visible"
+      window.tooltip.innerHTML = hoveringOn.getAttribute("tooltip")
+      window.tooltip.style.visibility = "visible"
     }
   }, 20)
 }
@@ -525,14 +535,10 @@ export function initConfigPanel(rbmk, options) {
 
       if (selectedIndex >= 0 && selectedIndex < rbmk.columns.length && rbmk.columns[selectedIndex] !== null) {
         // Column is selected, show its configuration
-        const columnName = createElement(
-          "p",
-          {
-            className: "noMargin",
-            style: { fontSize: "35px" },
-          },
-          `<b>${rbmk.columns[selectedIndex].constructor.name} (${selectedIndex})</b>`,
-        )
+        const columnName = document.createElement("p")
+        columnName.className = "noMargin"
+        columnName.style.fontSize = "35px"
+        columnName.textContent = `<b>${rbmk.columns[selectedIndex].constructor.name} (${selectedIndex})</b>`
 
         configMenu.appendChild(columnName)
 
@@ -543,13 +549,8 @@ export function initConfigPanel(rbmk, options) {
           configMenu.innerHTML += configContent
         }
       } else {
-        // No column selected, show RBMK options with fixed input/output rates
-        configMenu.innerHTML = `
-            <p style="font-size: 27px;">Boilers water input rate: 100 (Maximum)</p>
-            <p style="font-size: 27px;">Boilers steam output rate: 100 (Maximum)</p>
-            <button class="textButton" style="font-size: 27px;" action="reasimBoilers">ReaSim boilers: ${window.RBMKDials.dialReasimBoilers}</button>
-            <p style="font-size: 27px;">If you want to edit gamerules, please open developer tools and check the console</p>
-          `
+        // No column selected, show empty config panel
+        configMenu.innerHTML = `<p style="font-size: 27px;">Select a column to configure</p>`
       }
 
       options.config.prevColumn = selectedIndex
@@ -557,14 +558,10 @@ export function initConfigPanel(rbmk, options) {
   }, 100)
 }
 
-/**
- * Setup config menu action handler
- * @param {Object} rbmk - The RBMK instance
- * @param {Object} options - The simulation options
- */
+// Fix the setupConfigMenuAction function to properly handle fuel clicks
 export function setupConfigMenuAction(rbmk, options) {
   window.configMenuAction = () => {
-    const btn = document.elementFromPoint(mPos[0], mPos[1])
+    const btn = document.elementFromPoint(window.mPos[0], window.mPos[1])
     const col = rbmk.columns[options.config.columnIndexSelected]
     options.config.prevColumn = -1
 
@@ -588,7 +585,13 @@ export function setupConfigMenuAction(rbmk, options) {
 
       case "compression":
         if (col instanceof Boiler) {
-          col.steamType = (col.steamType + 1) % 4
+          // Only allow changing steam type if not locked
+          if (!col._lockedSteamType) {
+            col.steamType = (col.steamType + 1) % 4
+          } else {
+            // Show a message to the user
+            alert("Cannot change steam type while the system contains steam. Empty the system first.")
+          }
         }
         break
 
@@ -645,15 +648,16 @@ export function setupConfigMenuAction(rbmk, options) {
     }
   }
 
-  // Setup fuel click handler
+  // Fix the fuel click handler
   window.fuelClick = () => {
-    const btn = document.elementFromPoint(mPos[0], mPos[1])
+    const btn = document.elementFromPoint(window.mPos[0], window.mPos[1])
     const col = rbmk.columns[options.config.columnIndexSelected]
 
     if (col instanceof Fuel) {
-      const fuelIndex = Number.parseInt(btn.getAttribute("data-fuelname") || btn.getAttribute("fuelname"), 10)
+      const fuelIndex = Number.parseInt(btn.getAttribute("data-fuelname"), 10)
       if (!isNaN(fuelIndex) && fuelIndex >= 0 && fuelIndex < fuels.length) {
         col.fuel = new fuels[fuelIndex]()
+        col.fuel.column = col
         options.config.prevColumn = -1
       }
     }

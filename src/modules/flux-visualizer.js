@@ -1,11 +1,4 @@
 /**
- * Flux Visualizer for the RBMK Simulator
- * Renders arrows showing neutron flux movement between columns
- */
-
-import { RBMKDials, NType } from "./constants.js"
-
-/**
  * Initialize the flux visualization layer
  * @param {Object} rbmk - The RBMK instance
  * @returns {Object} - The flux visualization context
@@ -43,14 +36,10 @@ export function initFluxVisualizer(rbmk) {
   }
 }
 
-/**
- * Update the flux visualization data
- * @param {Object} rbmk - The RBMK instance
- * @param {Object} fluxViz - The flux visualization object
- */
+// Update the updateFluxData function to better capture flux movement
 export function updateFluxData(rbmk, fluxViz) {
   // Only update every few ticks to avoid performance issues
-  if (window.options.frames - fluxViz.lastUpdate < 5) return
+  if (window.options.frames - fluxViz.lastUpdate < 3) return
   fluxViz.lastUpdate = window.options.frames
 
   // Clear previous flux data
@@ -63,27 +52,13 @@ export function updateFluxData(rbmk, fluxViz) {
       const y = Math.floor(index / rbmk.width)
 
       // For each direction, trace the flux path
-      column.dirs.forEach((dir, dirIndex) => {
+      column.dirs.forEach((dir) => {
         // Skip if no flux in this direction
-        let fluxType = column.moderated ? NType.SLOW : column.fuel.rType
-        let fluxStrength = fluxType === NType.SLOW ? column.fluxSlow : column.fluxFast
+        let fluxType = column.moderated ? "SLOW" : column.fuel.rType
+        let fluxStrength = fluxType === "SLOW" ? column.fluxSlow : column.fluxFast
 
         // Skip if flux is too weak
         if (fluxStrength < 0.1) return
-
-        // Calculate offset for arrows to be side by side
-        const offset = 6 // Offset in pixels
-        let offsetX = 0
-        let offsetY = 0
-
-        // Calculate offset based on direction to make arrows side by side
-        if (dir.offsetX === 0) {
-          // Vertical direction (up/down)
-          offsetX = dirIndex % 2 === 0 ? -offset : offset
-        } else {
-          // Horizontal direction (left/right)
-          offsetY = dirIndex % 2 === 0 ? -offset : offset
-        }
 
         // Trace the flux path through the reactor
         let currentX = x
@@ -92,7 +67,7 @@ export function updateFluxData(rbmk, fluxViz) {
         let continueTracing = true
         let range = 0
 
-        while (continueTracing && range < RBMKDials.dialFluxRange) {
+        while (continueTracing && range < window.RBMKDials.dialFluxRange) {
           range++
           nextX = currentX + dir.offsetX
           nextY = currentY + dir.offsetY
@@ -112,17 +87,6 @@ export function updateFluxData(rbmk, fluxViz) {
             break
           }
 
-          // For outgoing flux (from fuel rod), use the original offset
-          // For incoming flux (to another fuel rod), use the opposite offset
-          let arrowOffsetX = offsetX
-          let arrowOffsetY = offsetY
-
-          // If the next column is a fuel rod, reverse the offset for the incoming arrow
-          if (nextColumn.constructor.name === "Fuel") {
-            arrowOffsetX = -offsetX
-            arrowOffsetY = -offsetY
-          }
-
           // Add flux data for this segment
           fluxViz.fluxData.push({
             fromX: currentX,
@@ -130,9 +94,7 @@ export function updateFluxData(rbmk, fluxViz) {
             toX: nextX,
             toY: nextY,
             strength: fluxStrength,
-            type: fluxType === NType.SLOW ? "slow" : "fast",
-            offsetX: arrowOffsetX,
-            offsetY: arrowOffsetY,
+            type: fluxType === "SLOW" ? "slow" : "fast",
           })
 
           // Update current position
@@ -151,7 +113,7 @@ export function updateFluxData(rbmk, fluxViz) {
             }
           } else if (nextColumn.constructor.name === "Moderator") {
             // Moderator changes flux type to slow
-            fluxType = NType.SLOW
+            fluxType = "SLOW"
           } else if (nextColumn.constructor.name === "Absorber") {
             // Absorber stops flux
             continueTracing = false
@@ -166,38 +128,15 @@ export function updateFluxData(rbmk, fluxViz) {
   })
 }
 
-/**
- * Draw the flux visualization
- * @param {Object} rbmk - The RBMK instance
- * @param {Object} fluxViz - The flux visualization object
- */
+// Update the drawFluxVisualization function to properly render flux arrows
 export function drawFluxVisualization(rbmk, fluxViz) {
   if (!fluxViz.visible) return
 
   const ctx = fluxViz.ctx
   ctx.clearRect(0, 0, fluxViz.canvas.width, fluxViz.canvas.height)
 
-  // Debug - draw a test arrow if no flux data
+  // If no flux data, show a helpful message
   if (fluxViz.fluxData.length === 0) {
-    ctx.strokeStyle = "rgba(255, 0, 0, 0.8)"
-    ctx.lineWidth = 2
-    ctx.beginPath()
-    ctx.moveTo(100, 100)
-    ctx.lineTo(200, 200)
-    ctx.stroke()
-
-    // Draw arrow head
-    const headLength = 10
-    const angle = Math.PI / 4 // 45 degrees for our test arrow
-    ctx.beginPath()
-    ctx.moveTo(200, 200)
-    ctx.lineTo(200 - headLength * Math.cos(angle - 0.5), 200 - headLength * Math.sin(angle - 0.5))
-    ctx.lineTo(200 - headLength * Math.cos(angle + 0.5), 200 - headLength * Math.sin(angle + 0.5))
-    ctx.closePath()
-    ctx.fillStyle = "rgba(255, 0, 0, 0.8)"
-    ctx.fill()
-
-    // Add text to explain the issue
     ctx.font = "12px monospace"
     ctx.fillStyle = "white"
     ctx.fillText("No flux data - place fuel rods and run simulation", 50, 230)
@@ -206,43 +145,52 @@ export function drawFluxVisualization(rbmk, fluxViz) {
 
   // Draw flux arrows
   fluxViz.fluxData.forEach((flux) => {
-    // Calculate arrow positions with offset to avoid overlapping
-    const fromX = flux.fromX * 32 + 16 + flux.offsetX
-    const fromY = flux.fromY * 32 + 16 + flux.offsetY
-    const toX = flux.toX * 32 + 16 + flux.offsetX
-    const toY = flux.toY * 32 + 16 + flux.offsetY
+    // Calculate cell centers
+    const fromCenterX = flux.fromX * 32 + 16
+    const fromCenterY = flux.fromY * 32 + 16
+    const toCenterX = flux.toX * 32 + 16
+    const toCenterY = flux.toY * 32 + 16
 
     // Calculate arrow direction
-    const dx = toX - fromX
-    const dy = toY - fromY
+    const dx = toCenterX - fromCenterX
+    const dy = toCenterY - fromCenterY
     const angle = Math.atan2(dy, dx)
+
+    // Calculate arrow length (shorter than full distance)
+    const distance = Math.sqrt(dx * dx + dy * dy)
+    const arrowLength = distance * 0.8
+
+    // Calculate arrow end point
+    const endX = fromCenterX + Math.cos(angle) * arrowLength
+    const endY = fromCenterY + Math.sin(angle) * arrowLength
 
     // Set arrow color and width based on flux type and strength
     if (flux.type === "fast") {
-      ctx.strokeStyle = `rgba(255, 50, 50, ${Math.min(0.9, flux.strength / 10)})`
+      ctx.strokeStyle = `rgba(255, 50, 50, ${Math.min(0.9, flux.strength / 5)})`
+      ctx.fillStyle = `rgba(255, 50, 50, ${Math.min(0.9, flux.strength / 5)})`
     } else {
-      ctx.strokeStyle = `rgba(50, 255, 50, ${Math.min(0.9, flux.strength / 10)})`
+      ctx.strokeStyle = `rgba(50, 255, 50, ${Math.min(0.9, flux.strength / 5)})`
+      ctx.fillStyle = `rgba(50, 255, 50, ${Math.min(0.9, flux.strength / 5)})`
     }
 
-    // Line width based on flux strength
-    ctx.lineWidth = Math.min(3, 1 + flux.strength / 20)
+    // Line width based on flux strength (min 2px, max 5px)
+    ctx.lineWidth = Math.max(2, Math.min(5, 1 + flux.strength / 10))
 
     // Draw arrow line
     ctx.beginPath()
-    ctx.moveTo(fromX, fromY)
-    ctx.lineTo(toX, toY)
+    ctx.moveTo(fromCenterX, fromCenterY)
+    ctx.lineTo(endX, endY)
     ctx.stroke()
 
     // Draw arrow head
-    const headLength = 8
+    const headLength = 10
     const headAngle = 0.5
 
     ctx.beginPath()
-    ctx.moveTo(toX, toY)
-    ctx.lineTo(toX - headLength * Math.cos(angle - headAngle), toY - headLength * Math.sin(angle - headAngle))
-    ctx.lineTo(toX - headLength * Math.cos(angle + headAngle), toY - headLength * Math.sin(angle + headAngle))
+    ctx.moveTo(endX, endY)
+    ctx.lineTo(endX - headLength * Math.cos(angle - headAngle), endY - headLength * Math.sin(angle - headAngle))
+    ctx.lineTo(endX - headLength * Math.cos(angle + headAngle), endY - headLength * Math.sin(angle + headAngle))
     ctx.closePath()
-    ctx.fillStyle = ctx.strokeStyle
     ctx.fill()
   })
 }
@@ -255,6 +203,16 @@ export function drawFluxVisualization(rbmk, fluxViz) {
 export function toggleFluxVisualization(fluxViz) {
   fluxViz.visible = !fluxViz.visible
   fluxViz.canvas.style.display = fluxViz.visible ? "block" : "none"
+
+  // Generate test flux data if needed
+  if (fluxViz.visible && fluxViz.fluxData.length === 0 && window.options.simulating) {
+    // Find all fuel rods and update their flux
+    const rbmk = window.rbmk
+    if (rbmk) {
+      updateFluxData(rbmk, fluxViz)
+    }
+  }
+
   console.log("Flux visualization toggled:", fluxViz.visible)
   return fluxViz.visible
 }

@@ -1,13 +1,13 @@
-import { RBMKFuel } from './fuel-base.js';
-import { EnumBurnFunc, EnumDepleteFunc, NType } from './constants.js';
+import { RBMKFuel } from "./fuel-base.js"
+import { EnumBurnFunc, EnumDepleteFunc, NType } from "./constants.js"
 
 /**
  * Empty fuel rod
  */
 export class NONE extends RBMKFuel {
   constructor() {
-    super();
-    this.setName("rbmk_fuel_empty");
+    super()
+    this.setName("rbmk_fuel_empty")
   }
 }
 
@@ -16,15 +16,15 @@ export class NONE extends RBMKFuel {
  */
 export class UEU extends RBMKFuel {
   constructor() {
-    super();
-    this.setYield(100000000);
-    this.setStats(15);
-    this.setFunction(EnumBurnFunc.LOG_TEN);
-    this.setDepletionFunction(EnumDepleteFunc.RAISING_SLOPE);
-    this.setHeat(0.65);
-    this.setMeltingPoint(2865);
-    this.setName("rbmk_fuel_ueu");
-    this.setTexture("rbmk_fuel_ueu");
+    super()
+    this.setYield(100000000)
+    this.setStats(15)
+    this.setFunction(EnumBurnFunc.LOG_TEN)
+    this.setDepletionFunction(EnumDepleteFunc.RAISING_SLOPE)
+    this.setHeat(0.65)
+    this.setMeltingPoint(2865)
+    this.setName("rbmk_fuel_ueu")
+    this.setTexture("rbmk_fuel_ueu")
   }
 }
 
@@ -33,15 +33,15 @@ export class UEU extends RBMKFuel {
  */
 export class MEU extends RBMKFuel {
   constructor() {
-    super();
-    this.setYield(100000000);
-    this.setStats(20);
-    this.setFunction(EnumBurnFunc.LOG_TEN);
-    this.setDepletionFunction(EnumDepleteFunc.RAISING_SLOPE);
-    this.setHeat(0.65);
-    this.setMeltingPoint(2865);
-    this.setName("rbmk_fuel_meu");
-    this.setTexture("rbmk_fuel_meu");
+    super()
+    this.setYield(100000000)
+    this.setStats(20)
+    this.setFunction(EnumBurnFunc.LOG_TEN)
+    this.setDepletionFunction(EnumDepleteFunc.RAISING_SLOPE)
+    this.setHeat(0.65)
+    this.setMeltingPoint(2865)
+    this.setName("rbmk_fuel_meu")
+    this.setTexture("rbmk_fuel_meu")
   }
 }
 
@@ -50,14 +50,14 @@ export class MEU extends RBMKFuel {
  */
 export class HEU233 extends RBMKFuel {
   constructor() {
-    super();
-    this.setYield(100000000);
-    this.setStats(27.5);
-    this.setFunction(EnumBurnFunc.LINEAR);
-    this.setHeat(1.25);
-    this.setMeltingPoint(2865);
-    this.setName("rbmk_fuel_heu233");
-    this.setTexture("rbmk_fuel_heu233");
+    super()
+    this.setYield(100000000)
+    this.setStats(27.5)
+    this.setFunction(EnumBurnFunc.LINEAR)
+    this.setHeat(1.25)
+    this.setMeltingPoint(2865)
+    this.setName("rbmk_fuel_heu233")
+    this.setTexture("rbmk_fuel_heu233")
   }
 }
 
@@ -66,13 +66,13 @@ export class HEU233 extends RBMKFuel {
  */
 export class HEU235 extends RBMKFuel {
   constructor() {
-    super();
-    this.setYield(100000000);
-    this.setStats(50);
-    this.setFunction(EnumBurnFunc.SQUARE_ROOT);
-    this.setMeltingPoint(2865);
-    this.setName("rbmk_fuel_heu235");
-    this.setTexture("rbmk_fuel_heu235");
+    super()
+    this.setYield(100000000)
+    this.setStats(50)
+    this.setFunction(EnumBurnFunc.SQUARE_ROOT)
+    this.setMeltingPoint(2865)
+    this.setName("rbmk_fuel_heu235")
+    this.setTexture("rbmk_fuel_heu235")
   }
 }
 
@@ -81,15 +81,15 @@ export class HEU235 extends RBMKFuel {
  */
 export class THMEU extends RBMKFuel {
   constructor() {
-    super();
-    this.setYield(100000000);
-    this.setStats(20);
-    this.setFunction(EnumBurnFunc.PLATEU);
-    this.setDepletionFunction(EnumDepleteFunc.BOOSTED_SLOPE);
-    this.setHeat(0.65);
-    this.setMeltingPoint(3350);
-    this.setName("rbmk_fuel_thmeu");
-    this.setTexture("rbmk_fuel_thmeu");
+    super()
+    this.setYield(100000000)
+    this.setStats(20)
+    this.setFunction(EnumBurnFunc.PLATEU)
+    this.setDepletionFunction(EnumDepleteFunc.BOOSTED_SLOPE)
+    this.setHeat(0.65)
+    this.setMeltingPoint(3350)
+    this.setName("rbmk_fuel_thmeu")
+    this.setTexture("rbmk_fuel_thmeu")
   }
 }
 
@@ -98,15 +98,15 @@ export class THMEU extends RBMKFuel {
  */
 export class LEP extends RBMKFuel {
   constructor() {
-    super();
-    this.setYield(100000000);
-    this.setStats(35);
-    this.setFunction(EnumBurnFunc.LOG_TEN);
-    this.setDepletionFunction(EnumDepleteFunc.RAISING_SLOPE);
-    this.setHeat(0.75);
-    this.setMeltingPoint(2744);
-    this.setName("rbmk_fuel_lep");
-    this.setTexture("rbmk_fuel_lep");
+    super()
+    this.setYield(100000000)
+    this.setStats(35)
+    this.setFunction(EnumBurnFunc.LOG_TEN)
+    this.setDepletionFunction(EnumDepleteFunc.RAISING_SLOPE)
+    this.setHeat(0.75)
+    this.setMeltingPoint(2744)
+    this.setName("rbmk_fuel_lep")
+    this.setTexture("rbmk_fuel_lep")
   }
 }
 
@@ -115,13 +115,13 @@ export class LEP extends RBMKFuel {
  */
 export class MEP extends RBMKFuel {
   constructor() {
-    super();
-    this.setYield(100000000);
-    this.setStats(35, 20);
-    this.setFunction(EnumBurnFunc.SQUARE_ROOT);
-    this.setMeltingPoint(2744);
-    this.setName("rbmk_fuel_mep");
-    this.setTexture("rbmk_fuel_mep");
+    super()
+    this.setYield(100000000)
+    this.setStats(35, 20)
+    this.setFunction(EnumBurnFunc.SQUARE_ROOT)
+    this.setMeltingPoint(2744)
+    this.setName("rbmk_fuel_mep")
+    this.setTexture("rbmk_fuel_mep")
   }
 }
 
@@ -130,14 +130,14 @@ export class MEP extends RBMKFuel {
  */
 export class HEP239 extends RBMKFuel {
   constructor() {
-    super();
-    this.setYield(100000000);
-    this.setStats(30);
-    this.setFunction(EnumBurnFunc.LINEAR);
-    this.setHeat(1.25);
-    this.setMeltingPoint(2744);
-    this.setName("rbmk_fuel_hep");
-    this.setTexture("rbmk_fuel_hep");
+    super()
+    this.setYield(100000000)
+    this.setStats(30)
+    this.setFunction(EnumBurnFunc.LINEAR)
+    this.setHeat(1.25)
+    this.setMeltingPoint(2744)
+    this.setName("rbmk_fuel_hep")
+    this.setTexture("rbmk_fuel_hep")
   }
 }
 
@@ -146,14 +146,14 @@ export class HEP239 extends RBMKFuel {
  */
 export class HEP241 extends RBMKFuel {
   constructor() {
-    super();
-    this.setYield(100000000);
-    this.setStats(40);
-    this.setFunction(EnumBurnFunc.LINEAR);
-    this.setHeat(1.75);
-    this.setMeltingPoint(2744);
-    this.setName("rbmk_fuel_hep241");
-    this.setTexture("rbmk_fuel_hep241");
+    super()
+    this.setYield(100000000)
+    this.setStats(40)
+    this.setFunction(EnumBurnFunc.LINEAR)
+    this.setHeat(1.75)
+    this.setMeltingPoint(2744)
+    this.setName("rbmk_fuel_hep241")
+    this.setTexture("rbmk_fuel_hep241")
   }
 }
 
@@ -162,15 +162,15 @@ export class HEP241 extends RBMKFuel {
  */
 export class LEA extends RBMKFuel {
   constructor() {
-    super();
-    this.setYield(100000000);
-    this.setStats(60, 10);
-    this.setFunction(EnumBurnFunc.SQUARE_ROOT);
-    this.setDepletionFunction(EnumDepleteFunc.RAISING_SLOPE);
-    this.setHeat(1.5);
-    this.setMeltingPoint(2386);
-    this.setName("rbmk_fuel_lea");
-    this.setTexture("rbmk_fuel_lea");
+    super()
+    this.setYield(100000000)
+    this.setStats(60, 10)
+    this.setFunction(EnumBurnFunc.SQUARE_ROOT)
+    this.setDepletionFunction(EnumDepleteFunc.RAISING_SLOPE)
+    this.setHeat(1.5)
+    this.setMeltingPoint(2386)
+    this.setName("rbmk_fuel_lea")
+    this.setTexture("rbmk_fuel_lea")
   }
 }
 
@@ -179,14 +179,14 @@ export class LEA extends RBMKFuel {
  */
 export class MEA extends RBMKFuel {
   constructor() {
-    super();
-    this.setYield(100000000);
-    this.setStats(35, 20);
-    this.setFunction(EnumBurnFunc.ARCH);
-    this.setHeat(1.75);
-    this.setMeltingPoint(2386);
-    this.setName("rbmk_fuel_mea");
-    this.setTexture("rbmk_fuel_mea");
+    super()
+    this.setYield(100000000)
+    this.setStats(35, 20)
+    this.setFunction(EnumBurnFunc.ARCH)
+    this.setHeat(1.75)
+    this.setMeltingPoint(2386)
+    this.setName("rbmk_fuel_mea")
+    this.setTexture("rbmk_fuel_mea")
   }
 }
 
@@ -195,15 +195,15 @@ export class MEA extends RBMKFuel {
  */
 export class HEA241 extends RBMKFuel {
   constructor() {
-    super();
-    this.setYield(100000000);
-    this.setStats(65, 15);
-    this.setFunction(EnumBurnFunc.SQUARE_ROOT);
-    this.setHeat(1.85);
-    this.setMeltingPoint(2386);
-    this.setNeutronTypes(NType.FAST, NType.FAST);
-    this.setName("rbmk_fuel_hea241");
-    this.setTexture("rbmk_fuel_hea241");
+    super()
+    this.setYield(100000000)
+    this.setStats(65, 15)
+    this.setFunction(EnumBurnFunc.SQUARE_ROOT)
+    this.setHeat(1.85)
+    this.setMeltingPoint(2386)
+    this.setNeutronTypes(NType.FAST, NType.FAST)
+    this.setName("rbmk_fuel_hea241")
+    this.setTexture("rbmk_fuel_hea241")
   }
 }
 
@@ -212,14 +212,14 @@ export class HEA241 extends RBMKFuel {
  */
 export class HEA242 extends RBMKFuel {
   constructor() {
-    super();
-    this.setYield(100000000);
-    this.setStats(45);
-    this.setFunction(EnumBurnFunc.LINEAR);
-    this.setHeat(2);
-    this.setMeltingPoint(2386);
-    this.setName("rbmk_fuel_hea242");
-    this.setTexture("rbmk_fuel_hea242");
+    super()
+    this.setYield(100000000)
+    this.setStats(45)
+    this.setFunction(EnumBurnFunc.LINEAR)
+    this.setHeat(2)
+    this.setMeltingPoint(2386)
+    this.setName("rbmk_fuel_hea242")
+    this.setTexture("rbmk_fuel_hea242")
   }
 }
 
@@ -228,16 +228,16 @@ export class HEA242 extends RBMKFuel {
  */
 export class MEN extends RBMKFuel {
   constructor() {
-    super();
-    this.setYield(100000000);
-    this.setStats(30);
-    this.setFunction(EnumBurnFunc.SQUARE_ROOT);
-    this.setDepletionFunction(EnumDepleteFunc.RAISING_SLOPE);
-    this.setHeat(0.75);
-    this.setMeltingPoint(2800);
-    this.setNeutronTypes(NType.ANY, NType.FAST);
-    this.setName("rbmk_fuel_men");
-    this.setTexture("rbmk_fuel_men");
+    super()
+    this.setYield(100000000)
+    this.setStats(30)
+    this.setFunction(EnumBurnFunc.SQUARE_ROOT)
+    this.setDepletionFunction(EnumDepleteFunc.RAISING_SLOPE)
+    this.setHeat(0.75)
+    this.setMeltingPoint(2800)
+    this.setNeutronTypes(NType.ANY, NType.FAST)
+    this.setName("rbmk_fuel_men")
+    this.setTexture("rbmk_fuel_men")
   }
 }
 
@@ -246,14 +246,14 @@ export class MEN extends RBMKFuel {
  */
 export class HEN extends RBMKFuel {
   constructor() {
-    super();
-    this.setYield(100000000);
-    this.setStats(40);
-    this.setFunction(EnumBurnFunc.SQUARE_ROOT);
-    this.setMeltingPoint(2800);
-    this.setNeutronTypes(NType.FAST, NType.FAST);
-    this.setName("rbmk_fuel_hen");
-    this.setTexture("rbmk_fuel_hen");
+    super()
+    this.setYield(100000000)
+    this.setStats(40)
+    this.setFunction(EnumBurnFunc.SQUARE_ROOT)
+    this.setMeltingPoint(2800)
+    this.setNeutronTypes(NType.FAST, NType.FAST)
+    this.setName("rbmk_fuel_hen")
+    this.setTexture("rbmk_fuel_hen")
   }
 }
 
@@ -262,14 +262,14 @@ export class HEN extends RBMKFuel {
  */
 export class MOX extends RBMKFuel {
   constructor() {
-    super();
-    this.setYield(100000000);
-    this.setStats(40);
-    this.setFunction(EnumBurnFunc.LOG_TEN);
-    this.setDepletionFunction(EnumDepleteFunc.RAISING_SLOPE);
-    this.setMeltingPoint(2815);
-    this.setName("rbmk_fuel_mox");
-    this.setTexture("rbmk_fuel_mox");
+    super()
+    this.setYield(100000000)
+    this.setStats(40)
+    this.setFunction(EnumBurnFunc.LOG_TEN)
+    this.setDepletionFunction(EnumDepleteFunc.RAISING_SLOPE)
+    this.setMeltingPoint(2815)
+    this.setName("rbmk_fuel_mox")
+    this.setTexture("rbmk_fuel_mox")
   }
 }
 
@@ -278,15 +278,15 @@ export class MOX extends RBMKFuel {
  */
 export class LES extends RBMKFuel {
   constructor() {
-    super();
-    this.setYield(100000000);
-    this.setStats(50);
-    this.setFunction(EnumBurnFunc.SQUARE_ROOT);
-    this.setHeat(1.25);
-    this.setMeltingPoint(2800);
-    this.setNeutronTypes(NType.SLOW, NType.SLOW);
-    this.setName("rbmk_fuel_les");
-    this.setTexture("rbmk_fuel_les");
+    super()
+    this.setYield(100000000)
+    this.setStats(50)
+    this.setFunction(EnumBurnFunc.SQUARE_ROOT)
+    this.setHeat(1.25)
+    this.setMeltingPoint(2800)
+    this.setNeutronTypes(NType.SLOW, NType.SLOW)
+    this.setName("rbmk_fuel_les")
+    this.setTexture("rbmk_fuel_les")
   }
 }
 
@@ -295,14 +295,14 @@ export class LES extends RBMKFuel {
  */
 export class MES extends RBMKFuel {
   constructor() {
-    super();
-    this.setYield(100000000);
-    this.setStats(75);
-    this.setFunction(EnumBurnFunc.ARCH);
-    this.setHeat(1.5);
-    this.setMeltingPoint(2750);
-    this.setName("rbmk_fuel_mes");
-    this.setTexture("rbmk_fuel_mes");
+    super()
+    this.setYield(100000000)
+    this.setStats(75)
+    this.setFunction(EnumBurnFunc.ARCH)
+    this.setHeat(1.5)
+    this.setMeltingPoint(2750)
+    this.setName("rbmk_fuel_mes")
+    this.setTexture("rbmk_fuel_mes")
   }
 }
 
@@ -311,15 +311,15 @@ export class MES extends RBMKFuel {
  */
 export class HES extends RBMKFuel {
   constructor() {
-    super();
-    this.setYield(100000000);
-    this.setStats(90);
-    this.setFunction(EnumBurnFunc.LINEAR);
-    this.setDepletionFunction(EnumDepleteFunc.LINEAR);
-    this.setHeat(1.75);
-    this.setMeltingPoint(3000);
-    this.setName("rbmk_fuel_hes");
-    this.setTexture("rbmk_fuel_hes");
+    super()
+    this.setYield(100000000)
+    this.setStats(90)
+    this.setFunction(EnumBurnFunc.LINEAR)
+    this.setDepletionFunction(EnumDepleteFunc.LINEAR)
+    this.setHeat(1.75)
+    this.setMeltingPoint(3000)
+    this.setName("rbmk_fuel_hes")
+    this.setTexture("rbmk_fuel_hes")
   }
 }
 
@@ -328,16 +328,16 @@ export class HES extends RBMKFuel {
  */
 export class LEAUS extends RBMKFuel {
   constructor() {
-    super();
-    this.setYield(100000000);
-    this.setStats(30);
-    this.setFunction(EnumBurnFunc.SIGMOID);
-    this.setDepletionFunction(EnumDepleteFunc.LINEAR);
-    this.setXenon(0.05, 50);
-    this.setHeat(1.5);
-    this.setMeltingPoint(7029);
-    this.setName("rbmk_fuel_leaus");
-    this.setTexture("rbmk_fuel_leaus");
+    super()
+    this.setYield(100000000)
+    this.setStats(30)
+    this.setFunction(EnumBurnFunc.SIGMOID)
+    this.setDepletionFunction(EnumDepleteFunc.LINEAR)
+    this.setXenon(0.05, 50)
+    this.setHeat(1.5)
+    this.setMeltingPoint(7029)
+    this.setName("rbmk_fuel_leaus")
+    this.setTexture("rbmk_fuel_leaus")
   }
 }
 
@@ -346,15 +346,15 @@ export class LEAUS extends RBMKFuel {
  */
 export class HEAUS extends RBMKFuel {
   constructor() {
-    super();
-    this.setYield(100000000);
-    this.setStats(35);
-    this.setFunction(EnumBurnFunc.SQUARE_ROOT);
-    this.setXenon(0.05, 50);
-    this.setHeat(2);
-    this.setMeltingPoint(5211);
-    this.setName("rbmk_fuel_heaus");
-    this.setTexture("rbmk_fuel_heaus");
+    super()
+    this.setYield(100000000)
+    this.setStats(35)
+    this.setFunction(EnumBurnFunc.SQUARE_ROOT)
+    this.setXenon(0.05, 50)
+    this.setHeat(2)
+    this.setMeltingPoint(5211)
+    this.setName("rbmk_fuel_heaus")
+    this.setTexture("rbmk_fuel_heaus")
   }
 }
 
@@ -363,18 +363,18 @@ export class HEAUS extends RBMKFuel {
  */
 export class PO210BE extends RBMKFuel {
   constructor() {
-    super();
-    this.setYield(25000000);
-    this.setStats(0, 50);
-    this.setFunction(EnumBurnFunc.PASSIVE);
-    this.setDepletionFunction(EnumDepleteFunc.LINEAR);
-    this.setXenon(0.0, 50);
-    this.setHeat(0.1);
-    this.setDiffusion(0.05);
-    this.setMeltingPoint(1287);
-    this.setNeutronTypes(NType.SLOW, NType.SLOW);
-    this.setName("rbmk_fuel_po210be");
-    this.setTexture("rbmk_fuel_po210be");
+    super()
+    this.setYield(25000000)
+    this.setStats(0, 50)
+    this.setFunction(EnumBurnFunc.PASSIVE)
+    this.setDepletionFunction(EnumDepleteFunc.LINEAR)
+    this.setXenon(0.0, 50)
+    this.setHeat(0.1)
+    this.setDiffusion(0.05)
+    this.setMeltingPoint(1287)
+    this.setNeutronTypes(NType.SLOW, NType.SLOW)
+    this.setName("rbmk_fuel_po210be")
+    this.setTexture("rbmk_fuel_po210be")
   }
 }
 
@@ -383,18 +383,18 @@ export class PO210BE extends RBMKFuel {
  */
 export class RA226BE extends RBMKFuel {
   constructor() {
-    super();
-    this.setYield(100000000);
-    this.setStats(0, 20);
-    this.setFunction(EnumBurnFunc.PASSIVE);
-    this.setDepletionFunction(EnumDepleteFunc.LINEAR);
-    this.setXenon(0.0, 50);
-    this.setHeat(0.035);
-    this.setDiffusion(0.5);
-    this.setMeltingPoint(700);
-    this.setNeutronTypes(NType.SLOW, NType.SLOW);
-    this.setName("rbmk_fuel_ra226be");
-    this.setTexture("rbmk_fuel_ra226be");
+    super()
+    this.setYield(100000000)
+    this.setStats(0, 20)
+    this.setFunction(EnumBurnFunc.PASSIVE)
+    this.setDepletionFunction(EnumDepleteFunc.LINEAR)
+    this.setXenon(0.0, 50)
+    this.setHeat(0.035)
+    this.setDiffusion(0.5)
+    this.setMeltingPoint(700)
+    this.setNeutronTypes(NType.SLOW, NType.SLOW)
+    this.setName("rbmk_fuel_ra226be")
+    this.setTexture("rbmk_fuel_ra226be")
   }
 }
 
@@ -403,16 +403,16 @@ export class RA226BE extends RBMKFuel {
  */
 export class PU238BE extends RBMKFuel {
   constructor() {
-    super();
-    this.setYield(50000000);
-    this.setStats(40, 40);
-    this.setFunction(EnumBurnFunc.SQUARE_ROOT);
-    this.setHeat(0.1);
-    this.setDiffusion(0.05);
-    this.setMeltingPoint(1287);
-    this.setNeutronTypes(NType.SLOW, NType.SLOW);
-    this.setName("rbmk_fuel_pu238be");
-    this.setTexture("rbmk_fuel_pu238be");
+    super()
+    this.setYield(50000000)
+    this.setStats(40, 40)
+    this.setFunction(EnumBurnFunc.SQUARE_ROOT)
+    this.setHeat(0.1)
+    this.setDiffusion(0.05)
+    this.setMeltingPoint(1287)
+    this.setNeutronTypes(NType.SLOW, NType.SLOW)
+    this.setName("rbmk_fuel_pu238be")
+    this.setTexture("rbmk_fuel_pu238be")
   }
 }
 
@@ -421,15 +421,15 @@ export class PU238BE extends RBMKFuel {
  */
 export class BALEFIRE_GOLD extends RBMKFuel {
   constructor() {
-    super();
-    this.setYield(100000000);
-    this.setStats(40, 40);
-    this.setFunction(EnumBurnFunc.ARCH);
-    this.setDepletionFunction(EnumDepleteFunc.LINEAR);
-    this.setXenon(0.0, 50);
-    this.setMeltingPoint(2000);
-    this.setName("rbmk_fuel_balefire_gold");
-    this.setTexture("rbmk_fuel_balefire_gold");
+    super()
+    this.setYield(100000000)
+    this.setStats(40, 40)
+    this.setFunction(EnumBurnFunc.ARCH)
+    this.setDepletionFunction(EnumDepleteFunc.LINEAR)
+    this.setXenon(0.0, 50)
+    this.setMeltingPoint(2000)
+    this.setName("rbmk_fuel_balefire_gold")
+    this.setTexture("rbmk_fuel_balefire_gold")
   }
 }
 
@@ -438,15 +438,15 @@ export class BALEFIRE_GOLD extends RBMKFuel {
  */
 export class FLASHLEAD extends RBMKFuel {
   constructor() {
-    super();
-    this.setYield(250000000);
-    this.setStats(40, 50);
-    this.setFunction(EnumBurnFunc.ARCH);
-    this.setDepletionFunction(EnumDepleteFunc.LINEAR);
-    this.setXenon(0.0, 50);
-    this.setMeltingPoint(2050);
-    this.setName("rbmk_fuel_flashlead");
-    this.setTexture("rbmk_fuel_flashlead");
+    super()
+    this.setYield(250000000)
+    this.setStats(40, 50)
+    this.setFunction(EnumBurnFunc.ARCH)
+    this.setDepletionFunction(EnumDepleteFunc.LINEAR)
+    this.setXenon(0.0, 50)
+    this.setMeltingPoint(2050)
+    this.setName("rbmk_fuel_flashlead")
+    this.setTexture("rbmk_fuel_flashlead")
   }
 }
 
@@ -455,16 +455,16 @@ export class FLASHLEAD extends RBMKFuel {
  */
 export class BALEFIRE extends RBMKFuel {
   constructor() {
-    super();
-    this.setYield(100000000);
-    this.setStats(100, 35);
-    this.setFunction(EnumBurnFunc.ARCH);
-    this.setDepletionFunction(EnumDepleteFunc.LINEAR);
-    this.setXenon(0.0, 50);
-    this.setHeat(3);
-    this.setMeltingPoint(3652);
-    this.setName("rbmk_fuel_balefire");
-    this.setTexture("rbmk_fuel_balefire");
+    super()
+    this.setYield(100000000)
+    this.setStats(100, 35)
+    this.setFunction(EnumBurnFunc.ARCH)
+    this.setDepletionFunction(EnumDepleteFunc.LINEAR)
+    this.setXenon(0.0, 50)
+    this.setHeat(3)
+    this.setMeltingPoint(3652)
+    this.setName("rbmk_fuel_balefire")
+    this.setTexture("rbmk_fuel_balefire")
   }
 }
 
@@ -473,14 +473,14 @@ export class BALEFIRE extends RBMKFuel {
  */
 export class ZFB_BISMUTH extends RBMKFuel {
   constructor() {
-    super();
-    this.setYield(50000000);
-    this.setStats(20);
-    this.setFunction(EnumBurnFunc.SQUARE_ROOT);
-    this.setHeat(1.75);
-    this.setMeltingPoint(2744);
-    this.setName("rbmk_fuel_zfb_bismuth");
-    this.setTexture("rbmk_fuel_zfb_bismuth");
+    super()
+    this.setYield(50000000)
+    this.setStats(20)
+    this.setFunction(EnumBurnFunc.SQUARE_ROOT)
+    this.setHeat(1.75)
+    this.setMeltingPoint(2744)
+    this.setName("rbmk_fuel_zfb_bismuth")
+    this.setTexture("rbmk_fuel_zfb_bismuth")
   }
 }
 
@@ -489,13 +489,13 @@ export class ZFB_BISMUTH extends RBMKFuel {
  */
 export class ZFB_PU241 extends RBMKFuel {
   constructor() {
-    super();
-    this.setYield(50000000);
-    this.setStats(20);
-    this.setFunction(EnumBurnFunc.SQUARE_ROOT);
-    this.setMeltingPoint(2865);
-    this.setName("rbmk_fuel_zfb_pu241");
-    this.setTexture("rbmk_fuel_zfb_pu241");
+    super()
+    this.setYield(50000000)
+    this.setStats(20)
+    this.setFunction(EnumBurnFunc.SQUARE_ROOT)
+    this.setMeltingPoint(2865)
+    this.setName("rbmk_fuel_zfb_pu241")
+    this.setTexture("rbmk_fuel_zfb_pu241")
   }
 }
 
@@ -504,14 +504,14 @@ export class ZFB_PU241 extends RBMKFuel {
  */
 export class ZFB_AM_MIX extends RBMKFuel {
   constructor() {
-    super();
-    this.setYield(50000000);
-    this.setStats(20);
-    this.setFunction(EnumBurnFunc.LINEAR);
-    this.setHeat(1.75);
-    this.setMeltingPoint(2744);
-    this.setName("rbmk_fuel_zfb_am_mix");
-    this.setTexture("rbmk_fuel_zfb_am_mix");
+    super()
+    this.setYield(50000000)
+    this.setStats(20)
+    this.setFunction(EnumBurnFunc.LINEAR)
+    this.setHeat(1.75)
+    this.setMeltingPoint(2744)
+    this.setName("rbmk_fuel_zfb_am_mix")
+    this.setTexture("rbmk_fuel_zfb_am_mix")
   }
 }
 
@@ -520,14 +520,14 @@ export class ZFB_AM_MIX extends RBMKFuel {
  */
 export class DRX extends RBMKFuel {
   constructor() {
-    super();
-    this.setYield(1000000);
-    this.setStats(1000, 10);
-    this.setFunction(EnumBurnFunc.QUADRATIC);
-    this.setHeat(0.1);
-    this.setMeltingPoint(100000);
-    this.setName("rbmk_fuel_drx");
-    this.setTexture("rbmk_fuel_drx");
+    super()
+    this.setYield(1000000)
+    this.setStats(1000, 10)
+    this.setFunction(EnumBurnFunc.QUADRATIC)
+    this.setHeat(0.1)
+    this.setMeltingPoint(100000)
+    this.setName("rbmk_fuel_drx")
+    this.setTexture("rbmk_fuel_drx")
   }
 }
 
@@ -536,21 +536,50 @@ export class DRX extends RBMKFuel {
  */
 export class TEST extends RBMKFuel {
   constructor() {
-    super();
-    this.setYield(1000000);
-    this.setStats(100);
-    this.setFunction(EnumBurnFunc.EXPERIMENTAL);
-    this.setHeat(1.0);
-    this.setMeltingPoint(100000);
-    this.setName("rbmk_fuel_test");
-    this.setTexture("rbmk_fuel_test");
+    super()
+    this.setYield(1000000)
+    this.setStats(100)
+    this.setFunction(EnumBurnFunc.EXPERIMENTAL)
+    this.setHeat(1.0)
+    this.setMeltingPoint(100000)
+    this.setName("rbmk_fuel_test")
+    this.setTexture("rbmk_fuel_test")
   }
 }
 
 // Export all fuel types in an array
 export const fuels = [
-  NONE, UEU, MEU, HEU233, HEU235, THMEU, LEP, MEP, HEP239, HEP241, 
-  LEA, MEA, HEA241, HEA242, MEN, HEN, MOX, LES, MES, HES, 
-  LEAUS, HEAUS, PO210BE, RA226BE, PU238BE, BALEFIRE_GOLD, FLASHLEAD, BALEFIRE, 
-  ZFB_BISMUTH, ZFB_PU241, ZFB_AM_MIX, DRX, TEST
-];
+  NONE,
+  UEU,
+  MEU,
+  HEU233,
+  HEU235,
+  THMEU,
+  LEP,
+  MEP,
+  HEP239,
+  HEP241,
+  LEA,
+  MEA,
+  HEA241,
+  HEA242,
+  MEN,
+  HEN,
+  MOX,
+  LES,
+  MES,
+  HES,
+  LEAUS,
+  HEAUS,
+  PO210BE,
+  RA226BE,
+  PU238BE,
+  BALEFIRE_GOLD,
+  FLASHLEAD,
+  BALEFIRE,
+  ZFB_BISMUTH,
+  ZFB_PU241,
+  ZFB_AM_MIX,
+  DRX,
+  TEST,
+]

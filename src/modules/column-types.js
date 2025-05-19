@@ -795,6 +795,9 @@ export class Boiler extends Column {
     // Water consumption and heat extraction rates
     this.waterConsumptionRate = 200 // Liters per tick
     this.heatExtractionRate = 0.1 // Base heat extraction per liter of water
+
+    // Add a flag to track if steam type is locked (can't change during operation)
+    this._lockedSteamType = false
   }
 
   /**
@@ -826,10 +829,11 @@ export class Boiler extends Column {
    * @returns {Object} - The trait
    */
   getTraitFromSteam() {
+    // More realistic values for large-scale reactors like RBMKP-2400
     if (this.steamType === 0) return { amountReq: 100, amountProduced: 1, efficiency: 0.7, heatEnergy: 100 }
-    if (this.steamType === 1) return { amountReq: 20, amountProduced: 1, efficiency: 0.8, heatEnergy: 200 }
-    if (this.steamType === 2) return { amountReq: 5, amountProduced: 1, efficiency: 0.9, heatEnergy: 400 }
-    if (this.steamType === 3) return { amountReq: 2, amountProduced: 1, efficiency: 1.0, heatEnergy: 800 }
+    if (this.steamType === 1) return { amountReq: 25, amountProduced: 1, efficiency: 0.8, heatEnergy: 250 }
+    if (this.steamType === 2) return { amountReq: 10, amountProduced: 1, efficiency: 0.9, heatEnergy: 500 }
+    if (this.steamType === 3) return { amountReq: 5, amountProduced: 1, efficiency: 1.0, heatEnergy: 1000 }
     return { amountReq: 100, amountProduced: 1, efficiency: 0.7, heatEnergy: 100 }
   }
 
@@ -842,6 +846,15 @@ export class Boiler extends Column {
     // Keep values within limits
     if (this.feedwater > this.feedwaterMax) this.feedwater = this.feedwaterMax
     if (this.spentSteam > this.spentSteamMax) this.spentSteam = this.spentSteamMax
+
+    // Prevent changing steam type during operation if there's steam in the system
+    if (this.steam > 0 || this.steam2 > 0) {
+      // Lock steam type changes during operation
+      this._lockedSteamType = true
+    } else if (this.steam === 0 && this.steam2 === 0) {
+      // Allow steam type changes when system is empty
+      this._lockedSteamType = false
+    }
 
     // Boiling - temperature-based steam production
     const minTemp = this.getHeatFromSteam()
@@ -898,12 +911,28 @@ export class Boiler extends Column {
         this.spentSteam += ops * trait.amountProduced
 
         // Calculate power based on steam type, efficiency, and heat energy
-        this.producedPower = ops * trait.heatEnergy * eff
+        // Improved power calculation that scales with temperature and efficiency
+        const tempEfficiency = Math.min(1, Math.max(0, (this.heat - minTemp) / 200))
+        const baseOutput = ops * trait.heatEnergy * eff * tempEfficiency
 
-        // Convert to MW with appropriate scaling for steam type
-        // Higher steam types produce more power per unit
-        const steamTypeMultiplier = Math.pow(2, this.steamType) // 1, 2, 4, 8 for steam types 0-3
-        this.producedMW = (this.producedPower * steamTypeMultiplier) / 100
+        // Scale based on steam type (more realistic progression)
+        const steamTypeMultiplier =
+          this.steamType === 0
+            ? 1
+            : this.steamType === 1
+              ? 4
+              : this.steamType === 2
+                ? 10
+                : this.steamType === 3
+                  ? 20
+                  : 1
+
+        this.producedPower = baseOutput
+
+        // Convert to MW with more realistic scaling
+        // For regular steam: ~1-2 MW per boiler at full efficiency
+        // For ultra dense: ~20-40 MW per boiler at full efficiency
+        this.producedMW = (this.producedPower * steamTypeMultiplier) / 1000
       }
     }
 
@@ -978,11 +1007,16 @@ export class Boiler extends Column {
       "button",
       {
         className: "textButton",
-        style: { fontSize: "27px" },
+        style: {
+          fontSize: "27px",
+          opacity: this._lockedSteamType ? "0.5" : "1",
+        },
         configmenuaction: "compression",
         onclick: "configMenuAction()",
+        disabled: this._lockedSteamType,
+        tooltip: this._lockedSteamType ? "Cannot change steam type while system contains steam" : "Change steam type",
       },
-      `Steam Type: ${this.compressors[this.steamType]}`,
+      `Steam Type: ${this.compressors[this.steamType]}${this._lockedSteamType ? " (Locked)" : ""}`,
     )
 
     stuff.appendChild(compressionBtn)

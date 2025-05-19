@@ -261,14 +261,8 @@ function initGraphs(rbmk) {
   initCharts(rbmk)
 }
 
-/**
- * Initialize charts
- * @param {Object} rbmk - The RBMK instance
- */
+// Fix the chart initialization to ensure power output graph works
 function initCharts(rbmk) {
-  // Fix the graph scaling issues
-  // Modify the chart options to make them less zoomed in
-
   // Use the global Chart object from the CDN
   const Chart = window.Chart
 
@@ -334,7 +328,6 @@ function initCharts(rbmk) {
           },
         },
       },
-      // In the initCharts function, update the chart options for better scaling
       maintainAspectRatio: false,
       aspectRatio: 2.5,
     },
@@ -383,6 +376,8 @@ function initCharts(rbmk) {
       scales: {
         y: {
           beginAtZero: true,
+          min: 0,
+          max: 10,
           grid: {
             color: "rgba(255, 255, 255, 0.1)",
           },
@@ -399,7 +394,6 @@ function initCharts(rbmk) {
           },
         },
       },
-      // For the flux chart:
       maintainAspectRatio: false,
       aspectRatio: 2.5,
     },
@@ -440,6 +434,8 @@ function initCharts(rbmk) {
       scales: {
         y: {
           beginAtZero: true,
+          min: 0,
+          max: 10,
           grid: {
             color: "rgba(255, 255, 255, 0.1)",
           },
@@ -456,7 +452,6 @@ function initCharts(rbmk) {
           },
         },
       },
-      // For the power chart:
       maintainAspectRatio: false,
       aspectRatio: 2.5,
     },
@@ -528,6 +523,9 @@ function initCharts(rbmk) {
     const maxPower = Math.max(...powerChart.data.datasets[0].data)
     if (maxPower > powerChart.options.scales.y.max * 0.8) {
       powerChart.options.scales.y.max = Math.ceil(maxPower * 1.2)
+    } else if (maxPower < powerChart.options.scales.y.max * 0.3 && maxPower > 0) {
+      // Scale down if we're using much less than the current scale
+      powerChart.options.scales.y.max = Math.max(10, Math.ceil(maxPower * 2))
     }
 
     powerChart.update()
@@ -543,6 +541,13 @@ function initCharts(rbmk) {
     powerChart.data.labels.push(timeLabel)
     powerChart.data.labels.shift()
   }, 1000)
+
+  // Store charts in window for debugging
+  window.charts = {
+    tempChart,
+    fluxChart,
+    powerChart,
+  }
 }
 
 // Add a function to manually generate flux for testing

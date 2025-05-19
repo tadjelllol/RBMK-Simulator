@@ -21,7 +21,7 @@ export class RBMK {
     this.statsRenderer = statsRenderer
     this.columns = columns
 
-    // Update the consoleImg initialization to use the correct path in
+    // Update the consoleImg initialization to use the local path
     this.consoleImg = new Image()
     this.consoleImg.crossOrigin = "anonymous"
     this.consoleImg.src = "/assets/gui_rbmk_console.png"

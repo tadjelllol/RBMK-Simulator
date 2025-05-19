@@ -31,8 +31,7 @@ export class RBMKFuel {
     this.coreHeat = 20
     this.skinHeat = 20
 
-    this.texture =
-      "https://raw.githubusercontent.com/HbmMods/Hbm-s-Nuclear-Tech-GIT/master/src/main/resources/assets/hbm/textures/items/rbmk_fuel_empty.png"
+    this.texture = "/assets/fuels/rbmk_fuel_empty.png"
   }
 
   /**
@@ -118,8 +117,8 @@ export class RBMKFuel {
    * @param {string} tex - The texture name
    */
   setTexture(tex) {
-    // Load textures from the GitHub repo instead of shoving every single texture inside the site files
-    this.texture = `https://raw.githubusercontent.com/HbmMods/Hbm-s-Nuclear-Tech-GIT/master/src/main/resources/assets/hbm/textures/items/${tex}.png`
+    // Use local assets that we've added to the project
+    this.texture = `/assets/fuels/${tex}.png`
   }
 
   /**

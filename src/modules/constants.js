@@ -16,6 +16,9 @@ export const RBMKDials = {
   dialDisableMeltdowns: false,
   dialReasimBoilers: false,
   dialReasimCount: 8,
+  // Add new settings for large reactors
+  dialLargeReactorMode: false, // Set to true for RBMKP-2400 style reactors
+  dialPowerScalingFactor: 1.0, // Adjust this for different reactor sizes
 }
 
 // Enums
@@ -110,10 +113,7 @@ export const SimulationDefaults = {
 // Asset paths
 export const Assets = {
   consoleImg: "/assets/gui_rbmk_console.png",
-  az5Sound:
-    "https://github.com/HbmMods/Hbm-s-Nuclear-Tech-GIT/blob/master/src/main/resources/assets/hbm/sounds/block/shutdown.ogg?raw=true",
-  explosionSound:
-    "https://github.com/HbmMods/Hbm-s-Nuclear-Tech-GIT/blob/master/src/main/resources/assets/hbm/sounds/block/rbmk_explosion.ogg?raw=true",
-  baseTexturePath:
-    "https://raw.githubusercontent.com/HbmMods/Hbm-s-Nuclear-Tech-GIT/master/src/main/resources/assets/hbm/textures/items/",
+  az5Sound: "/assets/sounds/shutdown.ogg",
+  explosionSound: "/assets/sounds/rbmk_explosion.ogg",
+  baseTexturePath: "/assets/fuels/",
 }
